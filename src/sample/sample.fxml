@@ -115,6 +115,7 @@
             <Button fx:id="but2" layoutX="29.0" layoutY="14.0" mnemonicParsing="false" onAction="#openWin2" text="Автомобили" />
             <Button layoutX="145.0" layoutY="14.0" mnemonicParsing="false" onAction="#openWin3" text="Сотрудники" />
             <Button layoutX="253.0" layoutY="14.0" mnemonicParsing="false" onAction="#openWin4" text="Осмотры" />
+            <Button layoutX="348.0" layoutY="14.0" mnemonicParsing="false" onAction="#openWinTab" text="Просмотр" />
             </children>
         </AnchorPane>
     </children>

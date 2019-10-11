@@ -96,20 +96,22 @@ public class Controller {
     public void onClickMethod() throws SQLException {
         int count=0;
         Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT count(employee) from gibdd_employee where employee='"+employee.getText()+"' and data_look='"+date.getValue()+"'");
+        String emp="SELECT count(employee) from gibdd_employee inner join gibdd_look ge on gibdd_employee.id = ge.id_look where employee='"+employee.getText()+"' and date_look='"+date.getValue()+"'";
+        System.out.println(emp);
+        ResultSet rs = stmt.executeQuery(emp);
         while (rs.next()) {
             count=rs.getInt(1);
         }
         if(autonumber.getText().equals("")||engine.getText().equals("")||color.getText().equals("")||model.getText().equals("")||passport.getText().equals("")||
                 certificate.getText().equals("")||FIO.getText().equals("")||address.getText().equals("")|| sex.getItems().toString().equals("")||date.getValue()==null||
-                employee.getText().equals("")|| rank.getAccessibleHelp().equals("")||conclusion.getValue().toString().equals("")||Integer.parseInt(years.getText())<1000||position.getText().equals("")||count>10){
+                employee.getText().equals("")|| rank.getText().equals("")||conclusion.getValue().toString().equals("")||Integer.parseInt(years.getText())<1000||position.getText().equals("")||count>10){
             return;
         }
 
 
 
 
-        //initData();
+        initData();
         // устанавливаем тип и значение которое должно хранится в колонке
         col1.setCellValueFactory(new PropertyValueFactory<Data, String>("autonumber"));
         col2.setCellValueFactory(new PropertyValueFactory<Data, String>("engine"));
@@ -187,5 +189,9 @@ public class Controller {
 
     public void openWin4(ActionEvent actionEvent) throws Exception {
         Window4 window4 = new Window4();
+    }
+
+    public void openWinTab(ActionEvent actionEvent) throws Exception {
+        WindowTab windowTAb = new WindowTab();
     }
 }

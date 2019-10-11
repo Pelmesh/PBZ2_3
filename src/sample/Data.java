@@ -20,6 +20,7 @@ public class Data {
     String sex;
     String FIO;
     String position;
+    int count;
 
 
     public Data(String autonumber, String engine, String color, String model, String password,
@@ -68,6 +69,19 @@ public class Data {
         this.id=id;
         this.date=date;
         this.conclusion=conclusion;
+    }
+
+    public Data(int id, LocalDate date) {
+        this.id=id;
+        this.date=date;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 
     public int getId() {

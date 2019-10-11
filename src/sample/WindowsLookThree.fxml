@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="502.0" prefWidth="867.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller.ControllerWindowsLookThree">
+   <children>
+      <TabPane prefHeight="400.0" prefWidth="761.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <tabs>
+          <Tab text="Расчет автомобилей">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1000.0" prefWidth="1000.0">
+                     <children>
+                        <TableView fx:id="TableOne" layoutX="41.0" layoutY="26.0" prefHeight="350.0" prefWidth="740.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="20.0">
+                          <columns>
+                            <TableColumn fx:id="col1" prefWidth="359.9999771118164" text="количество" />
+                            <TableColumn fx:id="col2" prefWidth="379.99993896484375" text="дата" />
+                          </columns>
+                        </TableView>
+                        <DatePicker fx:id="dateOne" layoutX="41.0" layoutY="408.0" />
+                        <DatePicker fx:id="dateTwo" layoutX="259.0" layoutY="408.0" />
+                        <Button layoutX="490.0" layoutY="408.0" mnemonicParsing="false" onAction="#searchTableOne" text="Поиск" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Список сотрудников">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="TableTwo" layoutX="50.0" layoutY="40.0" prefHeight="350.0" prefWidth="740.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="20.0">
+                           <columns>
+                              <TableColumn fx:id="col3" prefWidth="250.40003204345703" text="ФИО" />
+                              <TableColumn fx:id="col4" prefWidth="261.5999450683594" text="Звание" />
+                              <TableColumn fx:id="col5" prefWidth="304.0" text="Номер" />
+                           </columns>
+                        </TableView>
+                     </children></AnchorPane>
+            </content>
+          </Tab>
+            <Tab text="История">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="TableTwo1" prefHeight="350.0" prefWidth="740.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="20.0">
+                           <columns>
+                              <TableColumn fx:id="col6" prefWidth="373.6000442504883" text="дата" />
+                              <TableColumn fx:id="col7" prefWidth="392.0000183105469" text="результат" />
+                           </columns>
+                        </TableView>
+                     </children></AnchorPane>
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>
