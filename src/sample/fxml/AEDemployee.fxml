@@ -25,9 +25,9 @@
       <Text layoutX="20.0" layoutY="369.0" strokeType="OUTSIDE" strokeWidth="0.0" text="id:" />
       <Button layoutX="171.0" layoutY="352.0" mnemonicParsing="false" onAction="#delete" text="Удалить" textFill="#ff1515" />
       <Button fx:id="but" layoutX="16.0" layoutY="14.0" mnemonicParsing="false" onAction="#onClickMethod" text="Загрузить таблицу" AnchorPane.leftAnchor="20.0" />
-      <TextField fx:id="FIO" layoutX="27.0" layoutY="387.0" />
-      <TextField fx:id="position" layoutX="220.0" layoutY="387.0" />
-      <TextField fx:id="rank" layoutX="383.0" layoutY="387.0" />
-      <Button layoutX="581.0" layoutY="387.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#save" text="Сохранить" />
+      <TextField fx:id="FIO" layoutX="45.0" layoutY="387.0" prefHeight="26.0" prefWidth="118.0" />
+      <TextField fx:id="position" layoutX="201.0" layoutY="387.0" prefHeight="26.0" prefWidth="118.0" />
+      <TextField fx:id="rank" layoutX="359.0" layoutY="386.0" prefHeight="26.0" prefWidth="118.0" />
+      <Button layoutX="581.0" layoutY="386.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#save" text="Сохранить" />
    </children>
 </AnchorPane>

@@ -1,4 +1,4 @@
-package sample;
+package sample.Window;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -7,18 +7,18 @@ import javafx.stage.Stage;
 import sample.Controller.ControllerTwo;
 
 
-public class Window4 {
+public class WindowAEDcar {
 
 
     public void start() throws Exception {
         Stage primaryStage = new Stage();
-        Parent root = FXMLLoader.load(getClass().getResource("chek.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("../fxml/AEDcar.fxml"));
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }
 
-    public Window4() throws Exception {
+    public WindowAEDcar() throws Exception {
         start();
         ControllerTwo con = new ControllerTwo();
     }

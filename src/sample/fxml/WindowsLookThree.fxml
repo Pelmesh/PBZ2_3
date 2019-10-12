@@ -6,7 +6,9 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="502.0" prefWidth="867.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller.ControllerWindowsLookThree">
    <children>
@@ -23,8 +25,8 @@
                           </columns>
                         </TableView>
                         <DatePicker fx:id="dateOne" layoutX="41.0" layoutY="408.0" />
-                        <DatePicker fx:id="dateTwo" layoutX="259.0" layoutY="408.0" />
-                        <Button layoutX="490.0" layoutY="408.0" mnemonicParsing="false" onAction="#searchTableOne" text="Поиск" />
+                        <DatePicker fx:id="dateTwo" layoutX="307.0" layoutY="408.0" />
+                        <Button layoutX="540.0" layoutY="408.0" mnemonicParsing="false" onAction="#searchTableOne" text="Поиск" />
                      </children>
                   </AnchorPane>
             </content>
@@ -40,6 +42,8 @@
                               <TableColumn fx:id="col5" prefWidth="304.0" text="Номер" />
                            </columns>
                         </TableView>
+                        <DatePicker fx:id="dateThree" layoutX="50.0" layoutY="399.0" />
+                        <Button layoutX="300.0" layoutY="399.0" mnemonicParsing="false" onAction="#searchTableTwo" text="Поиск" />
                      </children></AnchorPane>
             </content>
           </Tab>
@@ -47,12 +51,15 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView fx:id="TableTwo1" prefHeight="350.0" prefWidth="740.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="20.0">
+                        <TableView fx:id="TableThree" prefHeight="350.0" prefWidth="740.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="20.0">
                            <columns>
                               <TableColumn fx:id="col6" prefWidth="373.6000442504883" text="дата" />
                               <TableColumn fx:id="col7" prefWidth="392.0000183105469" text="результат" />
                            </columns>
                         </TableView>
+                        <Button layoutX="383.0" layoutY="404.0" mnemonicParsing="false" onAction="#searchTableThree" text="Поиск" />
+                        <TextField fx:id="engineNumber" layoutX="191.0" layoutY="404.0" />
+                        <Text layoutX="50.0" layoutY="421.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Номер двигателя:" />
                      </children></AnchorPane>
                </content>
             </Tab>

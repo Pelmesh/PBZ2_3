@@ -8,14 +8,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import sample.*;
-import sample.Window3;
-import sample.Window4;
-import sample.WindowTwo;
+import sample.Window.WindowAEDemployee;
+import sample.Window.WindowAEDchecked;
+import sample.Window.WindowAEDcar;
+import sample.Window.WindowTab;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDate;
 
 public class Controller {
@@ -88,7 +86,7 @@ public class Controller {
     @FXML
     private ChoiceBox sex;
 
-    private Connection conn= Main.returnCon();
+    public Connection conn= Main.returnCon();
     private ObservableList<Data> usersData = FXCollections.observableArrayList();
 
 
@@ -108,30 +106,12 @@ public class Controller {
             return;
         }
 
-
-
-
         initData();
-        // устанавливаем тип и значение которое должно хранится в колонке
-        col1.setCellValueFactory(new PropertyValueFactory<Data, String>("autonumber"));
-        col2.setCellValueFactory(new PropertyValueFactory<Data, String>("engine"));
-        col3.setCellValueFactory(new PropertyValueFactory<Data, String>("color"));
-        col4.setCellValueFactory(new PropertyValueFactory<Data, String>("model"));
-        col5.setCellValueFactory(new PropertyValueFactory<Data, String>("password"));
-        col6.setCellValueFactory(new PropertyValueFactory<Data, String>("certificate"));
-        col7.setCellValueFactory(new PropertyValueFactory<Data, String>("FIO"));
-        col8.setCellValueFactory(new PropertyValueFactory<Data, String>("address"));
-        col9.setCellValueFactory(new PropertyValueFactory<Data, Integer>("years"));
-        col10.setCellValueFactory(new PropertyValueFactory<Data, String>("sex"));
-        col11.setCellValueFactory(new PropertyValueFactory<Data, String>("date"));
-        col12.setCellValueFactory(new PropertyValueFactory<Data, String>("employee"));
-        col13.setCellValueFactory(new PropertyValueFactory<Data, String>("rank"));
-        col14.setCellValueFactory(new PropertyValueFactory<Data, String>("conclusion"));
-        col15.setCellValueFactory(new PropertyValueFactory<Data, String>("position"));
-
-
-        table.setItems(usersData);
+        createTable();
     }
+
+
+
 
     void initData() throws SQLException {
         int id = 0;
@@ -155,10 +135,6 @@ public class Controller {
         Statement stmt = conn.createStatement();
 
 
-        usersData.add(new Data(autonumberStr,engineStr	,	colorStr,modelStr,	passportStr
-               ,certificateStr	,addressStr,FIOStr ,yearsInt,sexStr, Date
-                ,employeeStr, positionSTR,rankStr,conclusionStr));
-
         ResultSet rs = stmt.executeQuery("SELECT MAX(id) FROM gibdd_info");
         while (rs.next()) {
             id = rs.getInt(1)+1;
@@ -180,18 +156,73 @@ public class Controller {
 
 
     public void openWin2(ActionEvent actionEvent) throws Exception {
-        WindowTwo windowTwo = new WindowTwo();
+        WindowAEDcar windowAEDcar = new WindowAEDcar();
     }
 
     public void openWin3(ActionEvent actionEvent) throws Exception {
-        Window3 window3 = new Window3();
+        WindowAEDemployee window3 = new WindowAEDemployee();
     }
 
     public void openWin4(ActionEvent actionEvent) throws Exception {
-        Window4 window4 = new Window4();
+        WindowAEDchecked windowAEDchecked = new WindowAEDchecked();
     }
 
     public void openWinTab(ActionEvent actionEvent) throws Exception {
         WindowTab windowTAb = new WindowTab();
+    }
+
+    public void downloadTable(ActionEvent actionEvent) throws SQLException {
+        createTable();
+    }
+
+    private void createTable() throws SQLException {
+        table.getItems().clear();
+        col1.setCellValueFactory(new PropertyValueFactory<Data, String>("autonumber"));
+        col2.setCellValueFactory(new PropertyValueFactory<Data, String>("engine"));
+        col3.setCellValueFactory(new PropertyValueFactory<Data, String>("color"));
+        col4.setCellValueFactory(new PropertyValueFactory<Data, String>("model"));
+        col5.setCellValueFactory(new PropertyValueFactory<Data, String>("password"));
+        col6.setCellValueFactory(new PropertyValueFactory<Data, String>("certificate"));
+        col7.setCellValueFactory(new PropertyValueFactory<Data, String>("FIO"));
+        col8.setCellValueFactory(new PropertyValueFactory<Data, String>("address"));
+        col9.setCellValueFactory(new PropertyValueFactory<Data, Integer>("years"));
+        col10.setCellValueFactory(new PropertyValueFactory<Data, String>("sex"));
+        col11.setCellValueFactory(new PropertyValueFactory<Data, String>("date"));
+        col12.setCellValueFactory(new PropertyValueFactory<Data, String>("employee"));
+        col13.setCellValueFactory(new PropertyValueFactory<Data, String>("rank"));
+        col14.setCellValueFactory(new PropertyValueFactory<Data, String>("conclusion"));
+        col15.setCellValueFactory(new PropertyValueFactory<Data, String>("position"));
+
+
+        Statement stmt = conn.createStatement();
+        String query="select gibdd_info.*,e.*,i.* from gibdd_info\n" +
+                "        left    join gibdd_look i on gibdd_info.id = i.id_look\n" +
+                "        left    jOIN gibdd_employee e on gibdd_info.id = e.id";
+        System.out.println(query);
+        ResultSet rs =stmt.executeQuery(query);
+        while (rs.next()) {
+            String autonumberStr=rs.getString(2);
+            String engineStr=rs.getString(3);
+            String colorStr=rs.getString(4);
+            String modelStr=rs.getString(5);
+            String passportStr=rs.getString(6);
+            String certificateStr=rs.getString(7);
+            String addressStr=rs.getString(8);
+            String FIOStr=rs.getString(9);
+            int yearsInt=rs.getInt(10);
+            String sexStr=rs.getString(11);
+            String employeeStr=rs.getString(13);
+            String positionSTR=rs.getString(14);
+            String rankStr=rs.getString(15);
+            Date date=rs.getDate(17);
+            LocalDate Ldate=date.toLocalDate();
+            String conclusionStr=rs.getString(18);
+
+            usersData.add(new Data(autonumberStr,engineStr	,	colorStr,modelStr,	passportStr
+                    ,certificateStr	,addressStr,FIOStr ,yearsInt,sexStr, Ldate
+                    ,employeeStr, positionSTR,rankStr,conclusionStr));
+        }
+
+        table.setItems(usersData);
     }
 }

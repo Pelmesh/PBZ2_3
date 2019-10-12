@@ -76,6 +76,17 @@ public class Data {
         this.date=date;
     }
 
+    public Data(String employee, String rank, String autonumber) {
+        this.employee=employee;
+        this.rank=rank;
+        this.autonumber=autonumber;
+    }
+
+    public Data(LocalDate date, String conclusion) {
+        this.date=date;
+        this.conclusion=conclusion;
+    }
+
     public int getCount() {
         return count;
     }

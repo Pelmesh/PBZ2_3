@@ -1,27 +1,23 @@
-package sample;
+package sample.Window;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import sample.Controller.ControllerTwo;
+import sample.Controller.Controller3;
 
-
-public class WindowTwo {
-
-
+public class WindowAEDemployee {
     public void start() throws Exception {
         Stage primaryStage = new Stage();
-        Parent root = FXMLLoader.load(getClass().getResource("info.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("../fxml/AEDemployee.fxml"));
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }
 
-    public WindowTwo() throws Exception {
+    public WindowAEDemployee() throws Exception {
         start();
-        ControllerTwo con = new ControllerTwo();
+        Controller3 con = new Controller3();
     }
-
 
 }
