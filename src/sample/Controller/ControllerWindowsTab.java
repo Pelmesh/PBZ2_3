@@ -15,7 +15,7 @@ import sample.Main;
 import java.sql.*;
 import java.time.LocalDate;
 
-public class ControllerWindowsLookThree {
+public class ControllerWindowsTab {
     private Connection conn = Main.returnCon();
     @FXML
     private TableView<Data> TableOne,TableTwo,TableThree;
@@ -29,7 +29,7 @@ public class ControllerWindowsLookThree {
     private TableColumn<Data, Integer> col1;
     private ObservableList<Data> usersData = FXCollections.observableArrayList();
 
-    public ControllerWindowsLookThree(){
+    public ControllerWindowsTab(){
 
       /*
         */

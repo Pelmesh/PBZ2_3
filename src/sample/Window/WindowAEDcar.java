@@ -4,7 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import sample.Controller.ControllerTwo;
+import sample.Controller.ControllerAEDcar;
 
 
 public class WindowAEDcar {
@@ -20,7 +20,7 @@ public class WindowAEDcar {
 
     public WindowAEDcar() throws Exception {
         start();
-        ControllerTwo con = new ControllerTwo();
+        ControllerAEDcar con = new ControllerAEDcar();
     }
 
 

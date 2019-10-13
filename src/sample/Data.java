@@ -23,9 +23,10 @@ public class Data {
     int count;
 
 
-    public Data(String autonumber, String engine, String color, String model, String password,
+    public Data(int id, String autonumber, String engine, String color, String model, String password,
                 String certificate, String FIO, String address, int years, String sex, LocalDate date, String employee,
                 String position, String rank, String conclusion) {
+        this.id=id;
         this.autonumber = autonumber;
         this.engine = engine;
         this.color = color;

@@ -16,7 +16,7 @@ import sample.Window.WindowTab;
 import java.sql.*;
 import java.time.LocalDate;
 
-public class Controller {
+public class ControllerMain {
 
     @FXML
     private Button but;
@@ -81,7 +81,7 @@ public class Controller {
     private TableColumn<Data, String> col1,col2,col3,col4,col5,col6,col7,col8,col10,col11,col12,col13,col14,col15;
 
     @FXML
-    private TableColumn<Data, Integer> col9;
+    private TableColumn<Data, Integer> col16,col9;
 
     @FXML
     private ChoiceBox sex;
@@ -100,9 +100,16 @@ public class Controller {
         while (rs.next()) {
             count=rs.getInt(1);
         }
+        if(count>10){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("ошибка");
+            alert.setHeaderText("Больше 10");
+            alert.showAndWait();
+            return;
+        }
         if(autonumber.getText().equals("")||engine.getText().equals("")||color.getText().equals("")||model.getText().equals("")||passport.getText().equals("")||
                 certificate.getText().equals("")||FIO.getText().equals("")||address.getText().equals("")|| sex.getItems().toString().equals("")||date.getValue()==null||
-                employee.getText().equals("")|| rank.getText().equals("")||conclusion.getValue().toString().equals("")||Integer.parseInt(years.getText())<1000||position.getText().equals("")||count>10){
+                employee.getText().equals("")|| rank.getText().equals("")||conclusion.getValue().toString().equals("")||Integer.parseInt(years.getText())<1000||position.getText().equals("")){
             return;
         }
 
@@ -177,6 +184,7 @@ public class Controller {
 
     private void createTable() throws SQLException {
         table.getItems().clear();
+        col16.setCellValueFactory(new PropertyValueFactory<Data, Integer>("id"));
         col1.setCellValueFactory(new PropertyValueFactory<Data, String>("autonumber"));
         col2.setCellValueFactory(new PropertyValueFactory<Data, String>("engine"));
         col3.setCellValueFactory(new PropertyValueFactory<Data, String>("color"));
@@ -201,6 +209,7 @@ public class Controller {
         System.out.println(query);
         ResultSet rs =stmt.executeQuery(query);
         while (rs.next()) {
+            int id=rs.getInt(1);
             String autonumberStr=rs.getString(2);
             String engineStr=rs.getString(3);
             String colorStr=rs.getString(4);
@@ -215,10 +224,15 @@ public class Controller {
             String positionSTR=rs.getString(14);
             String rankStr=rs.getString(15);
             Date date=rs.getDate(17);
-            LocalDate Ldate=date.toLocalDate();
+            LocalDate Ldate=null;
+            if(date==null){
+
+            }else {
+                Ldate = date.toLocalDate();
+            }
             String conclusionStr=rs.getString(18);
 
-            usersData.add(new Data(autonumberStr,engineStr	,	colorStr,modelStr,	passportStr
+            usersData.add(new Data(id,autonumberStr,engineStr	,	colorStr,modelStr,	passportStr
                     ,certificateStr	,addressStr,FIOStr ,yearsInt,sexStr, Ldate
                     ,employeeStr, positionSTR,rankStr,conclusionStr));
         }

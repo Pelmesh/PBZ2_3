@@ -4,7 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import sample.Controller.ControllerWindowsLookThree;
+import sample.Controller.ControllerWindowsTab;
 
 public class WindowTab {
     public void start() throws Exception {
@@ -17,6 +17,6 @@ public class WindowTab {
 
     public WindowTab() throws Exception {
         start();
-        ControllerWindowsLookThree con = new ControllerWindowsLookThree();
+        ControllerWindowsTab con = new ControllerWindowsTab();
     }
 }

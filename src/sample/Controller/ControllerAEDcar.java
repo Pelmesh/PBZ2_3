@@ -17,7 +17,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class ControllerTwo {
+public class ControllerAEDcar {
     private Connection conn = Main.returnCon();
     @FXML
     private TableView<Data> Two;
@@ -31,7 +31,7 @@ public class ControllerTwo {
     @FXML
     private ChoiceBox sex;
 
-    public ControllerTwo() throws SQLException {
+    public ControllerAEDcar() throws SQLException {
 
     }
 
