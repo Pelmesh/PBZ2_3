@@ -5,6 +5,7 @@ import java.time.LocalDate;
 public class Data {
 
     int id;
+    int idAuto;
     String conclusion;
     String autonumber;
     String engine;
@@ -17,14 +18,14 @@ public class Data {
     int years;
     String employee;
     String rank;
-    String sex;
+    String gender;
     String FIO;
     String position;
     int count;
 
 
-    public Data(int id, String autonumber, String engine, String color, String model, String password,
-                String certificate, String FIO, String address, int years, String sex, LocalDate date, String employee,
+    public Data(int id, String autonumber, String engine, String color, String model, String password,int years,
+                String certificate,String FIO,  String address,  String gender, LocalDate date, String employee,
                 String position, String rank, String conclusion) {
         this.id=id;
         this.autonumber = autonumber;
@@ -35,7 +36,7 @@ public class Data {
         this.certificate = certificate;
         this.address = address;
         this.years = years;
-        this.sex = sex;
+        this.gender = gender;
         this.FIO = FIO;
         this.conclusion = conclusion;
         this.date = date;
@@ -44,49 +45,25 @@ public class Data {
         this.rank = rank;
     }
 
-    public Data(int id, String autonumber, String engine, String color, String model, String password, String certificate, String FIO, String address, int years, String sex) {
-        this.id = id;
+    public Data(int id, String autonumber, String engine, String color, String model, String password, int years) {
+        this.id=id;
         this.autonumber = autonumber;
         this.engine = engine;
         this.color = color;
         this.password = password;
         this.model = model;
+        this.years = years;
+    }
+
+    public Data(int id,int idAuto, String certificate, String FIO,String address, String gender) {
+        this.id=id;
+        this.idAuto=idAuto;
         this.certificate = certificate;
         this.address = address;
-        this.years = years;
-        this.sex = sex;
+        this.gender = gender;
         this.FIO = FIO;
-
     }
 
-    public Data(int id, String FIO, String position, String rank) {
-        this.FIO = FIO;
-        this.id = id;
-        this.position=position;
-        this.rank=rank;
-    }
-
-    public Data(int id, LocalDate date, String conclusion) {
-        this.id=id;
-        this.date=date;
-        this.conclusion=conclusion;
-    }
-
-    public Data(int id, LocalDate date) {
-        this.id=id;
-        this.date=date;
-    }
-
-    public Data(String employee, String rank, String autonumber) {
-        this.employee=employee;
-        this.rank=rank;
-        this.autonumber=autonumber;
-    }
-
-    public Data(LocalDate date, String conclusion) {
-        this.date=date;
-        this.conclusion=conclusion;
-    }
 
     public int getCount() {
         return count;
@@ -102,6 +79,14 @@ public class Data {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getIdAuto() {
+        return idAuto;
+    }
+
+    public void setIdAuto(int idAuto) {
+        this.idAuto = idAuto;
     }
 
     public String getAutonumber() {
@@ -208,12 +193,12 @@ public class Data {
         this.FIO = FIO;
     }
 
-    public String getSex() {
-        return sex;
+    public String getGender() {
+        return gender;
     }
 
-    public void setSex(String sex) {
-        this.sex = sex;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public String getPosition() {
@@ -222,6 +207,51 @@ public class Data {
 
     public void setPosition(String position) {
         this.position = position;
+    }
+
+
+    public Data(int id, String autonumber, String engine, String color, String model, String password, String certificate, String FIO, String address, int years, String sex) {
+        this.id = id;
+        this.autonumber = autonumber;
+        this.engine = engine;
+        this.color = color;
+        this.password = password;
+        this.model = model;
+        this.certificate = certificate;
+        this.address = address;
+        this.years = years;
+        this.gender = sex;
+        this.FIO = FIO;
+
+    }
+
+    public Data(int id, String FIO, String position, String rank) {
+        this.FIO = FIO;
+        this.id = id;
+        this.position=position;
+        this.rank=rank;
+    }
+
+    public Data(int id, LocalDate date, String conclusion) {
+        this.id=id;
+        this.date=date;
+        this.conclusion=conclusion;
+    }
+
+    public Data(int id, LocalDate date) {
+        this.id=id;
+        this.date=date;
+    }
+
+    public Data(String employee, String rank, String autonumber) {
+        this.employee=employee;
+        this.rank=rank;
+        this.autonumber=autonumber;
+    }
+
+    public Data(LocalDate date, String conclusion) {
+        this.date=date;
+        this.conclusion=conclusion;
     }
 
 }

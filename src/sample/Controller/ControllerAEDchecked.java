@@ -4,16 +4,20 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import sample.Data;
 import sample.Main;
 
+import javax.annotation.PostConstruct;
+import java.net.URL;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.ResourceBundle;
 
-public class ControllerAEDchecked {
+public class ControllerAEDchecked implements Initializable {
     private Connection conn = Main.returnCon();
     @FXML
     private TableView<Data> table;
@@ -31,8 +35,9 @@ public class ControllerAEDchecked {
 
 
     public ControllerAEDchecked() throws SQLException {
-
+        //createTable();
     }
+
 
     void createTable() throws SQLException {
         table.getItems().clear();
@@ -102,6 +107,15 @@ public class ControllerAEDchecked {
             Date d=rs.getDate(2);
             date.setValue(d.toLocalDate());
             conclusion.setValue(rs.getString(3));
+        }
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        try {
+            createTable();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }
