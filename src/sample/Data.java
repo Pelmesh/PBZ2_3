@@ -22,6 +22,8 @@ public class Data {
     String FIO;
     String position;
     int count;
+    int idOwner;
+    int idemp;
 
 
     public Data(int id, String autonumber, String engine, String color, String model, String password,int years,
@@ -64,6 +66,29 @@ public class Data {
         this.FIO = FIO;
     }
 
+    public Data(int id, int idOwner, LocalDate date, String conclusion, int idAuto,int idemp) {
+        this.date=date;
+        this.id=id;
+        this.idAuto=idAuto;
+        this.conclusion=conclusion;
+        this.idemp=idemp;
+        this.idOwner=idOwner;
+    }
+    public int getIdemp() {
+        return idemp;
+    }
+
+    public void setIdemp(int idemp) {
+        this.idemp = idemp;
+    }
+
+    public int getIdOwner() {
+        return idOwner;
+    }
+
+    public void setIdOwner(int idOwner) {
+        this.idOwner = idOwner;
+    }
 
     public int getCount() {
         return count;

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -21,10 +24,10 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <TextField fx:id="Id" layoutX="39.0" layoutY="334.0" prefHeight="26.0" prefWidth="50.0" />
-                              <Button layoutX="106.0" layoutY="335.0" mnemonicParsing="false" onAction="#search" text="Поиск" />
+                              <TextField fx:id="id" layoutX="39.0" layoutY="334.0" prefHeight="26.0" prefWidth="50.0" />
+                              <Button layoutX="117.0" layoutY="334.0" mnemonicParsing="false" onAction="#search" text="Поиск" />
                               <Button layoutX="191.0" layoutY="334.0" mnemonicParsing="false" onAction="#delete" text="Удалить" textFill="#ff1515" />
-                              <TableView fx:id="table" layoutX="39.0" layoutY="14.0" maxWidth="1.7976931348623157E308" prefHeight="295.0" prefWidth="902.0">
+                              <TableView fx:id="table" layoutX="39.0" layoutY="14.0" maxWidth="1.7976931348623157E308" prefHeight="295.0" prefWidth="902.0" AnchorPane.leftAnchor="39.0" AnchorPane.topAnchor="14.0">
                                  <columns>
                                     <TableColumn fx:id="colid" prefWidth="49.60003739595413" resizable="false" text="id" />
                                     <TableColumn fx:id="col1" prefWidth="111.20000457763672" text="гос номер" />
@@ -61,7 +64,7 @@
                                     <TextField fx:id="color" GridPane.columnIndex="2" />
                                     <TextField fx:id="model" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                                     <TextField fx:id="passport" GridPane.columnIndex="4" />
-                                    <TextField fx:id="certificate" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                                    <TextField fx:id="year" GridPane.columnIndex="4" GridPane.rowIndex="2" />
                                     <Button mnemonicParsing="false" onAction="#save" text="Сохранить" GridPane.columnIndex="6" />
                                  </children>
                               </GridPane>
@@ -73,7 +76,7 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <TableView fx:id="tableOwners" layoutX="65.0" layoutY="35.0" prefHeight="308.0" prefWidth="773.0">
+                              <TableView fx:id="tableOwners" layoutX="65.0" layoutY="35.0" prefHeight="308.0" prefWidth="773.0" AnchorPane.leftAnchor="39.0" AnchorPane.topAnchor="14.0">
                                 <columns>
                                   <TableColumn fx:id="col7" prefWidth="118.39999389648438" text="id" />
                                     <TableColumn fx:id="col11" prefWidth="128.79998779296875" text="Машина" />
@@ -83,9 +86,22 @@
                                     <TableColumn fx:id="col10" prefWidth="128.79998779296875" text="Удостоверение" />
                                 </columns>
                               </TableView>
-                              <TextField fx:id="idOwners" layoutX="65.0" layoutY="377.0" prefHeight="26.0" prefWidth="50.0" />
-                              <Button layoutX="132.0" layoutY="378.0" mnemonicParsing="false" onAction="#searchOwners" text="Поиск" />
-                              <Button layoutX="217.0" layoutY="377.0" mnemonicParsing="false" onAction="#deleteOwners" text="Удалить" textFill="#ff1515" />
+                              <TextField fx:id="idOwners" layoutX="39.0" layoutY="350.0" prefHeight="26.0" prefWidth="50.0" />
+                              <Button layoutX="107.0" layoutY="350.0" mnemonicParsing="false" onAction="#searchOwners" text="Поиск" />
+                              <Button layoutX="184.0" layoutY="350.0" mnemonicParsing="false" onAction="#deleteOwners" text="Удалить" textFill="#ff1515" />
+                              <TextField fx:id="certificate" layoutX="543.0" layoutY="403.0" />
+                              <TextField fx:id="address" layoutX="259.0" layoutY="439.0" />
+                              <TextField fx:id="FIO" layoutX="33.0" layoutY="439.0" />
+                              <TextField fx:id="auto" layoutX="33.0" layoutY="404.0" />
+                              <Button layoutX="543.0" layoutY="438.0" mnemonicParsing="false" onAction="#saveOwner" prefHeight="26.0" prefWidth="91.0" text="Сохранить" />
+                               <ChoiceBox fx:id="gender" layoutX="258.0" layoutY="403.0" prefHeight="26.0" prefWidth="149.0" GridPane.columnIndex="5" GridPane.rowIndex="3">
+                                   <items>
+                                       <FXCollections fx:factory="observableArrayList">
+                                           <String fx:value="Man" />
+                                           <String fx:value="Woman" />
+                                       </FXCollections>
+                                   </items>
+                               </ChoiceBox>
                            </children>
                         </AnchorPane>
                   </content>

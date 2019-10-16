@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -12,12 +13,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import sample.Data;
 import sample.Main;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.net.URL;
+import java.sql.*;
+import java.util.ResourceBundle;
 
-public class ControllerAEDemployee {
+public class ControllerAEDemployee implements Initializable{
     private Connection conn = Main.returnCon();
     @FXML
     private TableView<Data> table;
@@ -29,10 +29,6 @@ public class ControllerAEDemployee {
     @FXML
     private TextField Id,FIO,position,rank;
 
-    public ControllerAEDemployee() throws SQLException {
-
-    }
-
     void createTable() throws SQLException {
         table.getItems().clear();
         colid.setCellValueFactory(new PropertyValueFactory<Data, Integer>("id"));
@@ -40,65 +36,74 @@ public class ControllerAEDemployee {
         col3.setCellValueFactory(new PropertyValueFactory<Data, String>("position"));
         col4.setCellValueFactory(new PropertyValueFactory<Data, String>("rank"));
 
-        init();
+        PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM gibdd_employee");
+        ResultSet rs = preparedStatement.executeQuery();
+        while (rs.next()) {
+            int id = rs.getInt(1);
+            String employeeStr = rs.getString(2);
+            String rankStr = rs.getString(3);
+            String positionStr = rs.getString(4);
 
+            usersData.add(new Data(id, employeeStr, rankStr, positionStr));
+        }
         table.setItems(usersData);
     }
 
-    void init() throws SQLException {
-        Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM gibdd_employee ");
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        try {
+            createTable();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void delete(ActionEvent actionEvent) throws SQLException {
+        PreparedStatement preparedStatement = conn.prepareStatement("DELETE FROM gibdd_employee cascade WHERE id_employee=?");
+        preparedStatement.setInt(1, Integer.parseInt(Id.getText()));
+        preparedStatement.executeUpdate();
+        createTable();
+    }
+
+    public void search(ActionEvent actionEvent) throws SQLException {
+        PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM gibdd_employee where id_employee=?");
+        preparedStatement.setInt(1, Integer.parseInt(Id.getText()));
+        ResultSet rs = preparedStatement.executeQuery();
         while (rs.next()) {
-            int id = rs.getInt(1);
-            String FIO = rs.getString(2);
-            String position = rs.getString(3);
-            String rank = rs.getString(4);
-            usersData.add(new Data(id, FIO, position, rank));
+            FIO.setText(rs.getString(2));
+            rank.setText(rs.getString(3));
+            position.setText(rs.getString(4));
         }
     }
 
     public void save(ActionEvent actionEvent) throws SQLException {
-        Statement stmt = conn.createStatement();
-        int count = 0;
-        String query="SELECT COUNT(id) FROM gibdd_employee WHERE id="+Integer.parseInt(Id.getText());
-        ResultSet rs =stmt.executeQuery(query);
+        int count=0;
+        PreparedStatement preparedStatement = conn.prepareStatement("SELECT COUNT(id_employee) FROM gibdd_employee where id_employee=?");
+        preparedStatement.setInt(1, Integer.parseInt(Id.getText()));
+        ResultSet rs = preparedStatement.executeQuery();
         while (rs.next()) {
             count=rs.getInt(1);
         }
 
         if (count==1){
-            query="UPDATE gibdd_employee SET employee='"+FIO.getText()+"',position='"+position.getText()+"',rank='"+rank.getText()
-                    +"' WHERE id="+Integer.parseInt(Id.getText());
-            System.out.println(query);
-            stmt.execute(query);
+            preparedStatement = conn.prepareStatement("UPDATE gibdd_employee SET FIO=?,rank=?,position=? where id_employee=?");
+            preparedStatement.setInt(4, Integer.parseInt(Id.getText()));
+            preparedStatement.setString(1, FIO.getText());
+            preparedStatement.setString(2, rank.getText());
+            preparedStatement.setString(3, position.getText());
+            System.out.println(preparedStatement);
+            preparedStatement.executeUpdate();
         }else if(count==0){
-            query="INSERT INTO gibdd_employee values("+Integer.parseInt(Id.getText())+",'"+FIO.getText()+"','"+position.getText()+"','"+rank.getText()+"')";System.out.println(query);
-            stmt.execute(query);
+            preparedStatement = conn.prepareStatement("insert into gibdd_employee(id_employee, FIO,rank,position) values\n" +
+                    "    (?,?,?,?);");
+            preparedStatement.setInt(1, Integer.parseInt(Id.getText()));
+            preparedStatement.setString(2, FIO.getText());
+            preparedStatement.setString(3, rank.getText());
+            preparedStatement.setString(4, position.getText());
+            System.out.println(preparedStatement);
+            preparedStatement.executeUpdate();
         }
         createTable();
-    }
-
-    public void onClickMethod(ActionEvent actionEvent) throws SQLException {
-        createTable();
-    }
-
-    public void delete(ActionEvent actionEvent) throws SQLException {
-        String idStr = Id.getText();
-        Statement stmt = conn.createStatement();
-        String query="DELETE FROM gibdd_employee WHERE id="+"'"+idStr+"'";
-        stmt.execute(query);
-        createTable();
-    }
-
-    public void search(ActionEvent actionEvent) throws SQLException {
-        String idStr = Id.getText();
-        Statement stmt = conn.createStatement();
-        String query="SELECT * FROM gibdd_employee WHERE id="+"'"+idStr+"'";
-        ResultSet rs = stmt.executeQuery(query);
-        while (rs.next()) {
-            FIO.setText(rs.getString(2));
-            position.setText(rs.getString(3));
-            rank.setText(rs.getString(4));
-        }
     }
 }

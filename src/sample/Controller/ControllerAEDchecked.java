@@ -24,89 +24,105 @@ public class ControllerAEDchecked implements Initializable {
     @FXML
     private TableColumn<Data, String>  col2, col3;
     @FXML
-    private TableColumn<Data, Integer> colid;
+    private TableColumn<Data, Integer> colid,col1,col4,colidlook;
     private ObservableList<Data> usersData = FXCollections.observableArrayList();
     @FXML
-    private TextField Id;
+    private TextField Id,idAuto,idOwner,idEmp;
     @FXML
     private ChoiceBox conclusion;
     @FXML
     private DatePicker date;
 
 
-    public ControllerAEDchecked() throws SQLException {
-        //createTable();
-    }
-
 
     void createTable() throws SQLException {
         table.getItems().clear();
-        colid.setCellValueFactory(new PropertyValueFactory<Data, Integer>("id"));
+
+        colidlook.setCellValueFactory(new PropertyValueFactory<Data, Integer>("id"));
+        colid.setCellValueFactory(new PropertyValueFactory<Data, Integer>("idAuto"));
+        col1.setCellValueFactory(new PropertyValueFactory<Data, Integer>("idOwner"));
         col2.setCellValueFactory(new PropertyValueFactory<Data, String>("date"));
         col3.setCellValueFactory(new PropertyValueFactory<Data, String>("conclusion"));
+        col4.setCellValueFactory(new PropertyValueFactory<Data, Integer>("idemp"));
 
-        init();
 
+
+        PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM gibdd_look");
+        ResultSet rs = preparedStatement.executeQuery();
+        while (rs.next()) {
+            int id = rs.getInt(6);
+            int idOwner = rs.getInt(2);
+            String conclusion = rs.getString(4);
+            Date date = rs.getDate(3);
+            LocalDate localD = date.toLocalDate();
+            int idAuto = rs.getInt(5);
+            int idemp = rs.getInt(5);
+            System.out.println(id+" "+idOwner+" "+localD+" "+conclusion+" "+idAuto+" "+idemp);
+            usersData.add(new Data(id,idOwner, localD, conclusion,idAuto,idemp));
+        }
         table.setItems(usersData);
     }
 
-    void init() throws SQLException {
-        Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM gibdd_look ");
-        while (rs.next()) {
-            int id = rs.getInt(1);
-            String conclusion = rs.getString(3);
-            Date date = rs.getDate(2);
-            LocalDate localD = date.toLocalDate();
-            usersData.add(new Data(id, localD, conclusion));
-        }
-    }
 
     public void save(ActionEvent actionEvent) throws SQLException {
-        Statement stmt = conn.createStatement();
-        int count = 0;
-        String query="SELECT COUNT(id_look) FROM gibdd_look WHERE id_look="+Integer.parseInt(Id.getText());
-        ResultSet rs =stmt.executeQuery(query);
+        int count=0;
+        PreparedStatement preparedStatement = conn.prepareStatement("SELECT COUNT(id_look) FROM gibdd_employee where id_look=?");
+        preparedStatement.setInt(1, Integer.parseInt(Id.getText()));
+        ResultSet rs = preparedStatement.executeQuery();
         while (rs.next()) {
             count=rs.getInt(1);
         }
 
         if (count==1){
-            query="UPDATE gibdd_look SET date_look='"+date.getValue()+"',conclusion='"+conclusion.getValue().toString()+"' WHERE id_look="+Integer.parseInt(Id.getText());
-            System.out.println(query);
-            stmt.execute(query);
+            preparedStatement = conn.prepareStatement("UPDATE gibdd_look SET id_auto=?,id_owner=?,date_look=?,id_employee=?,conlusion=? where id_look=?");
+            preparedStatement.setInt(1, Integer.parseInt(idAuto.getText()));
+            preparedStatement.setInt(2, Integer.parseInt(idOwner.getText()));
+            preparedStatement.setDate(3, Date.valueOf(date.getValue()));
+            preparedStatement.setInt(4, Integer.parseInt(idEmp.getText()));
+            preparedStatement.setString(5, conclusion.getValue().toString());
+            preparedStatement.setString(6, Id.getText());
+            System.out.println(preparedStatement);
+            preparedStatement.executeUpdate();
         }else if(count==0){
-            query="INSERT INTO gibdd_look values("+Integer.parseInt(Id.getText())+",'"+date.getValue()+"','"+conclusion.getValue().toString()+"')";
-            System.out.println(query);
-            stmt.execute(query);
+            int idLook = 0;
+            preparedStatement = conn.prepareStatement("SELECT MAX(id_look) FROM gibdd_look;");
+            rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                idLook = rs.getInt(1) + 1;
+            }
+            preparedStatement = conn.prepareStatement("insert into gibdd_look(id_auto,id_owner, date_look,conlusion, id_employee,id_look) values\n" +
+                    "    (?,?,?,?,?,?);");
+            preparedStatement.setInt(1, Integer.parseInt(idAuto.getText()));
+            preparedStatement.setInt(2, Integer.parseInt(idOwner.getText()));
+            preparedStatement.setDate(3, Date.valueOf(date.getValue()));
+            preparedStatement.setInt(5, Integer.parseInt(idEmp.getText()));
+            preparedStatement.setString(4, conclusion.getValue().toString());
+            preparedStatement.setString(6, Id.getText());
+            System.out.println(preparedStatement);
+            preparedStatement.executeUpdate();
         }
         createTable();
     }
 
-    public void onClickMethod(ActionEvent actionEvent) throws SQLException {
-        createTable();
-    }
 
     public void delete(ActionEvent actionEvent) throws SQLException {
-        String idStr = Id.getText();
-        Statement stmt = conn.createStatement();
-        String query="DELETE FROM gibdd_look WHERE id_look="+"'"+idStr+"'";
-        stmt.execute(query);
+        PreparedStatement preparedStatement = conn.prepareStatement("DELETE FROM gibdd_look cascade WHERE id_look=?");
+        preparedStatement.setInt(1, Integer.parseInt(Id.getText()));
+        preparedStatement.executeUpdate();
         createTable();
     }
 
     public void search(ActionEvent actionEvent) throws SQLException {
-        String idStr = Id.getText();
-        Statement stmt = conn.createStatement();
-        String query="SELECT * FROM gibdd_look WHERE id_look="+"'"+idStr+"'";
-        System.out.println(
-                query
-        );
-        ResultSet rs = stmt.executeQuery(query);
+        PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM gibdd_look where id_look=?");
+        preparedStatement.setInt(1, Integer.parseInt(Id.getText()));
+        ResultSet rs = preparedStatement.executeQuery();
         while (rs.next()) {
-            Date d=rs.getDate(2);
-            date.setValue(d.toLocalDate());
-            conclusion.setValue(rs.getString(3));
+            idAuto.setText(rs.getString(1));
+            idOwner.setText(rs.getString(2));
+            Date dates=rs.getDate(3);
+            date.setValue(dates.toLocalDate());
+            conclusion.setValue(rs.getString(4));
+            idEmp.setText(rs.getString(5));
         }
     }
 

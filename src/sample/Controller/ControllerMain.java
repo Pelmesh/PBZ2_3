@@ -91,7 +91,7 @@ public class ControllerMain implements Initializable {
         col7.setCellValueFactory(new PropertyValueFactory<Data, String>("FIO"));
         col8.setCellValueFactory(new PropertyValueFactory<Data, String>("address"));
         col9.setCellValueFactory(new PropertyValueFactory<Data, Integer>("years"));
-        col10.setCellValueFactory(new PropertyValueFactory<Data, String>("sex"));
+        col10.setCellValueFactory(new PropertyValueFactory<Data, String>("gender"));
         col11.setCellValueFactory(new PropertyValueFactory<Data, String>("date"));
         col12.setCellValueFactory(new PropertyValueFactory<Data, String>("conclusion"));
         col13.setCellValueFactory(new PropertyValueFactory<Data, String>("rank"));
@@ -122,14 +122,14 @@ public class ControllerMain implements Initializable {
             }
             String conclusionStr = rs.getString(11);
 
-            String certificateStr = rs.getString(15);
-            String FIOStr = rs.getString(16);
-            String addressStr = rs.getString(17);
-            String genderSTR = rs.getString(18);
+            String certificateStr = rs.getString(20);
+            String FIOStr = rs.getString(21);
+            String addressStr = rs.getString(22);
+            String genderSTR = rs.getString(23);
 
-            String rankStr = rs.getString(20);
-            String positionSTR = rs.getString(21);
-            String employeeStr = rs.getString(22);
+            String rankStr = rs.getString(15);
+            String positionSTR = rs.getString(16);
+            String employeeStr = rs.getString(17);
 
             usersData.add(new Data(id, autonumberStr, engineStr, colorStr, modelStr, passportStr, yearsInt
                     , certificateStr, FIOStr, addressStr, genderSTR, Ldate, conclusionStr
@@ -204,6 +204,13 @@ public class ControllerMain implements Initializable {
             while (rs.next()) {
                 idOwner = rs.getInt(1) + 1;
             }
+            int idLook = 0;
+            preparedStatement = conn.prepareStatement("SELECT MAX(id_look) FROM gibdd_look;");
+            rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                idLook = rs.getInt(1) + 1;
+            }
+
             preparedStatement = conn.prepareStatement("insert into gibdd_owner(id_auto,id_owner, certificate,FIO, adress, gender) values\n" +
                     "(?,?,?,?,?,?);\n");
             preparedStatement.setInt(1, idAuto);
@@ -214,13 +221,15 @@ public class ControllerMain implements Initializable {
             preparedStatement.setString(6, genderStr);
             preparedStatement.executeUpdate();
 
-            preparedStatement = conn.prepareStatement("insert into gibdd_look(id_auto,id_owner, date_look,conlusion, id_employee) values\n" +
-                    "                    (?,?,?,?,?);");
+
+            preparedStatement = conn.prepareStatement("insert into gibdd_look(id_auto,id_owner, date_look,conlusion, id_employee,id_look) values\n" +
+                    "                    (?,?,?,?,?,?);");
             preparedStatement.setInt(1, idAuto);
             preparedStatement.setInt(2, idOwner);
             preparedStatement.setDate(3, java.sql.Date.valueOf(Date));
             preparedStatement.setString(4, conclusionStr);
             preparedStatement.setInt(5, idEmployee);
+            preparedStatement.setInt(6, idLook);
             System.out.println(preparedStatement);
             preparedStatement.executeUpdate();
         }
@@ -229,6 +238,12 @@ public class ControllerMain implements Initializable {
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 idAuto = rs.getInt(1) + 1;
+            }
+            int idLook = 0;
+            preparedStatement = conn.prepareStatement("SELECT MAX(id_look) FROM gibdd_look;");
+            rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                idLook = rs.getInt(1) + 1;
             }
 
             preparedStatement = conn.prepareStatement("insert into gibdd_auto(id_auto, autonumber,engine, color, model, passport, yers) values\n" +
@@ -258,13 +273,14 @@ public class ControllerMain implements Initializable {
             preparedStatement.setString(6, genderStr);
             preparedStatement.executeUpdate();
 
-            preparedStatement = conn.prepareStatement("insert into gibdd_look(id_auto,id_owner, date_look,conlusion, id_employee) values\n" +
-                    "                    (?,?,?,?,?);");
+            preparedStatement = conn.prepareStatement("insert into gibdd_look(id_auto,id_owner, date_look,conlusion, id_employee,id_look) values\n" +
+                    "                    (?,?,?,?,?,?);");
             preparedStatement.setInt(1, idAuto);
             preparedStatement.setInt(2, idOwner);
             preparedStatement.setDate(3, java.sql.Date.valueOf(Date));
             preparedStatement.setString(4, conclusionStr);
             preparedStatement.setInt(5, idEmployee);
+            preparedStatement.setInt(6, idLook);
             preparedStatement.executeUpdate();
         }
         createTable();
