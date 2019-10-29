@@ -25,10 +25,8 @@ public class Data {
     int idOwner;
     int idemp;
 
-
-    public Data(int id, String autonumber, String engine, String color, String model, String password,int years,
-                String certificate,String FIO,  String address,  String gender, LocalDate date, String employee,
-                String position, String rank, String conclusion) {
+    public Data(int id, String autonumber, String engine, String color, String model, String password, int years, String certificate,
+                String FIO, String address, String gender, String employee, String position, String rank,LocalDate date, String conclusion) {
         this.id=id;
         this.autonumber = autonumber;
         this.engine = engine;
@@ -57,16 +55,15 @@ public class Data {
         this.years = years;
     }
 
-    public Data(int id,int idAuto, String certificate, String FIO,String address, String gender) {
+    public Data(int id, String certificate, String FIO,String address, String gender) {
         this.id=id;
-        this.idAuto=idAuto;
         this.certificate = certificate;
         this.address = address;
         this.gender = gender;
         this.FIO = FIO;
     }
 
-    public Data(int id, int idOwner, LocalDate date, String conclusion, int idAuto,int idemp) {
+    public Data(int id, int idOwner,int idAuto,LocalDate date, String conclusion,int idemp) {
         this.date=date;
         this.id=id;
         this.idAuto=idAuto;
@@ -74,6 +71,9 @@ public class Data {
         this.idemp=idemp;
         this.idOwner=idOwner;
     }
+
+
+
     public int getIdemp() {
         return idemp;
     }

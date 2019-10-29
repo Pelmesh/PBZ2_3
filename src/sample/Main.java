@@ -37,15 +37,7 @@ public class Main extends Application {
 
     public static void main(String[] args) throws SQLException {
        connect();
-        launch(args);
-        PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO gibdd_look(id_look,date_look, conclusion) VALUES " +
-                "(?,?,?)");
-        preparedStatement.setInt(1, 13);
-        preparedStatement.setDate(2, Date.valueOf("2222-12-12"));
-        preparedStatement.setString(3,"'OK');drop table from gibdd_look where conlusion=('OK'" );
-        System.out.println(preparedStatement);
-        //preparedStatement.executeUpdate();
-
+       launch(args);
     }
 
 

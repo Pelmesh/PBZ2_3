@@ -32,6 +32,8 @@ public class ControllerAEDchecked implements Initializable {
     private ChoiceBox conclusion;
     @FXML
     private DatePicker date;
+    private PreparedStatement preparedStatement;
+    private  ResultSet rs;
 
 
 
@@ -45,20 +47,10 @@ public class ControllerAEDchecked implements Initializable {
         col3.setCellValueFactory(new PropertyValueFactory<Data, String>("conclusion"));
         col4.setCellValueFactory(new PropertyValueFactory<Data, Integer>("idemp"));
 
-
-
-        PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM gibdd_look");
-        ResultSet rs = preparedStatement.executeQuery();
+        preparedStatement = conn.prepareStatement("SELECT * FROM gibdd_look");
+        rs = preparedStatement.executeQuery();
         while (rs.next()) {
-            int id = rs.getInt(6);
-            int idOwner = rs.getInt(2);
-            String conclusion = rs.getString(4);
-            Date date = rs.getDate(3);
-            LocalDate localD = date.toLocalDate();
-            int idAuto = rs.getInt(5);
-            int idemp = rs.getInt(5);
-            System.out.println(id+" "+idOwner+" "+localD+" "+conclusion+" "+idAuto+" "+idemp);
-            usersData.add(new Data(id,idOwner, localD, conclusion,idAuto,idemp));
+            usersData.add(new Data(rs.getInt(1),rs.getInt(2), rs.getInt(3),rs.getDate(4).toLocalDate(),rs.getString(5),rs.getInt(6)));
         }
         table.setItems(usersData);
     }
@@ -66,39 +58,31 @@ public class ControllerAEDchecked implements Initializable {
 
     public void save(ActionEvent actionEvent) throws SQLException {
         int count=0;
-        PreparedStatement preparedStatement = conn.prepareStatement("SELECT COUNT(id_look) FROM gibdd_employee where id_look=?");
-        preparedStatement.setInt(1, Integer.parseInt(Id.getText()));
-        ResultSet rs = preparedStatement.executeQuery();
-        while (rs.next()) {
-            count=rs.getInt(1);
+        if(!Id.getText().equals("")) {
+            preparedStatement = conn.prepareStatement("SELECT COUNT(id_look) FROM gibdd_employee where id_look=?");
+            preparedStatement.setInt(1, Integer.parseInt(Id.getText()));
+            rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                count = rs.getInt(1);
+            }
         }
-
         if (count==1){
-            preparedStatement = conn.prepareStatement("UPDATE gibdd_look SET id_auto=?,id_owner=?,date_look=?,id_employee=?,conlusion=? where id_look=?");
+            preparedStatement = conn.prepareStatement("UPDATE gibdd_look SET id_auto=?,id_owner=?,date_look=?,id_employee=?,conlusion=? WHERE id_look=?");
             preparedStatement.setInt(1, Integer.parseInt(idAuto.getText()));
             preparedStatement.setInt(2, Integer.parseInt(idOwner.getText()));
             preparedStatement.setDate(3, Date.valueOf(date.getValue()));
             preparedStatement.setInt(4, Integer.parseInt(idEmp.getText()));
             preparedStatement.setString(5, conclusion.getValue().toString());
             preparedStatement.setString(6, Id.getText());
-            System.out.println(preparedStatement);
             preparedStatement.executeUpdate();
         }else if(count==0){
-            int idLook = 0;
-            preparedStatement = conn.prepareStatement("SELECT MAX(id_look) FROM gibdd_look;");
-            rs = preparedStatement.executeQuery();
-            while (rs.next()) {
-                idLook = rs.getInt(1) + 1;
-            }
-            preparedStatement = conn.prepareStatement("insert into gibdd_look(id_auto,id_owner, date_look,conlusion, id_employee,id_look) values\n" +
-                    "    (?,?,?,?,?,?);");
+            preparedStatement = conn.prepareStatement("INSERT INTO gibdd_look(id_auto,id_owner, date_look,conlusion, id_employee) VALUES \n" +
+                    "    (?,?,?,?,?);");
             preparedStatement.setInt(1, Integer.parseInt(idAuto.getText()));
             preparedStatement.setInt(2, Integer.parseInt(idOwner.getText()));
             preparedStatement.setDate(3, Date.valueOf(date.getValue()));
-            preparedStatement.setInt(5, Integer.parseInt(idEmp.getText()));
             preparedStatement.setString(4, conclusion.getValue().toString());
-            preparedStatement.setString(6, Id.getText());
-            System.out.println(preparedStatement);
+            preparedStatement.setInt(5, Integer.parseInt(idEmp.getText()));
             preparedStatement.executeUpdate();
         }
         createTable();
@@ -119,8 +103,7 @@ public class ControllerAEDchecked implements Initializable {
         while (rs.next()) {
             idAuto.setText(rs.getString(1));
             idOwner.setText(rs.getString(2));
-            Date dates=rs.getDate(3);
-            date.setValue(dates.toLocalDate());
+            date.setValue(rs.getDate(3).toLocalDate());
             conclusion.setValue(rs.getString(4));
             idEmp.setText(rs.getString(5));
         }

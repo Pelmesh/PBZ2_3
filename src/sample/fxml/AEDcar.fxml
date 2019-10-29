@@ -2,6 +2,7 @@
 
 <?import java.lang.String?>
 <?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Tab?>
@@ -13,6 +14,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Text?>
 
 <GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller.ControllerAEDcar">
     <children>
@@ -20,7 +22,7 @@
             <children>
             <TabPane prefHeight="530.0" prefWidth="958.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
-                <Tab text="Untitled Tab 1">
+                <Tab text="Автомобиль">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -41,17 +43,17 @@
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy>
                               </TableView>
-                              <GridPane layoutX="39.0" layoutY="394.0" prefHeight="91.0" prefWidth="798.0">
+                              <GridPane layoutX="39.0" layoutY="394.0" prefHeight="91.0" prefWidth="864.0">
                                  <columnConstraints>
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.2000244140625" minWidth="10.0" prefWidth="110.2000244140625" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="139.99999084472657" minWidth="10.0" prefWidth="139.99999084472657" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="103.99999999999997" minWidth="10.0" prefWidth="103.99999999999997" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="113.60001220703123" minWidth="10.0" prefWidth="113.60001220703123" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="97.79999999999995" minWidth="8.79998779296875" prefWidth="97.79999999999995" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="179.8" minWidth="10.0" prefWidth="92.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="127.00003662109373" minWidth="2.79998779296875" prefWidth="83.79996337890623" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="142.19997558593752" minWidth="0.5999633789062955" prefWidth="61.60000000000002" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="93.4000244140625" minWidth="0.0" prefWidth="0.0" />
                                  </columnConstraints>
                                  <rowConstraints>
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -59,42 +61,70 @@
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <children>
-                                    <TextField fx:id="autonumber" />
-                                    <TextField fx:id="engine" GridPane.rowIndex="2" />
-                                    <TextField fx:id="color" GridPane.columnIndex="2" />
-                                    <TextField fx:id="model" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                                    <TextField fx:id="passport" GridPane.columnIndex="4" />
-                                    <TextField fx:id="year" GridPane.columnIndex="4" GridPane.rowIndex="2" />
-                                    <Button mnemonicParsing="false" onAction="#save" text="Сохранить" GridPane.columnIndex="6" />
+                                    <TextField fx:id="autonumber" GridPane.columnIndex="1" />
+                                    <TextField fx:id="engine" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <TextField fx:id="color" GridPane.columnIndex="3" />
+                                    <TextField fx:id="model" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                    <TextField fx:id="passport" GridPane.columnIndex="5" />
+                                    <TextField fx:id="year" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                                    <Button mnemonicParsing="false" onAction="#save" text="Сохранить" GridPane.columnIndex="7" />
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Номер:" wrappingWidth="64.70822143554688">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </Text>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Двигатель:" wrappingWidth="77.71759033203125" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </Text>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Цвет:" wrappingWidth="48.26258850097656" GridPane.columnIndex="2">
+                                       <GridPane.margin>
+                                          <Insets left="60.0" />
+                                       </GridPane.margin>
+                                    </Text>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Модель:" wrappingWidth="60.015201568603516" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets left="45.0" />
+                                       </GridPane.margin>
+                                    </Text>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Паспорт:" wrappingWidth="62.33825719356537" GridPane.columnIndex="4">
+                                       <GridPane.margin>
+                                          <Insets left="40.0" />
+                                       </GridPane.margin>
+                                    </Text>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Год:" wrappingWidth="33.85547065734863" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets left="65.0" />
+                                       </GridPane.margin>
+                                    </Text>
                                  </children>
                               </GridPane>
                            </children>
                         </AnchorPane>
                   </content>
                 </Tab>
-                <Tab text="Untitled Tab 2">
+                <Tab text="Владельцы">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <TableView fx:id="tableOwners" layoutX="65.0" layoutY="35.0" prefHeight="308.0" prefWidth="773.0" AnchorPane.leftAnchor="39.0" AnchorPane.topAnchor="14.0">
+                              <TableView fx:id="tableOwners" layoutX="39.0" layoutY="14.0" prefHeight="308.0" prefWidth="773.0" AnchorPane.leftAnchor="39.0" AnchorPane.topAnchor="14.0">
                                 <columns>
-                                  <TableColumn fx:id="col7" prefWidth="118.39999389648438" text="id" />
-                                    <TableColumn fx:id="col11" prefWidth="128.79998779296875" text="Машина" />
-                                    <TableColumn fx:id="col12" prefWidth="128.79998779296875" text="ФИО" />
-                                  <TableColumn fx:id="col8" prefWidth="69.5999755859375" text="Пол" />
-                                    <TableColumn fx:id="col9" prefWidth="169.6000518798828" text="Адрес" />
-                                    <TableColumn fx:id="col10" prefWidth="128.79998779296875" text="Удостоверение" />
+                                  <TableColumn fx:id="col7" prefWidth="163.99999618530273" text="id" />
+                                    <TableColumn fx:id="col9" prefWidth="123.19999694824219" text="ФИО" />
+                                  <TableColumn fx:id="col10" prefWidth="100.79998779296875" text="Пол" />
+                                    <TableColumn fx:id="col11" prefWidth="160.79998779296875" text="Адрес" />
+                                    <TableColumn fx:id="col12" prefWidth="224.79998779296875" text="Удостоверение" />
                                 </columns>
                               </TableView>
                               <TextField fx:id="idOwners" layoutX="39.0" layoutY="350.0" prefHeight="26.0" prefWidth="50.0" />
                               <Button layoutX="107.0" layoutY="350.0" mnemonicParsing="false" onAction="#searchOwners" text="Поиск" />
                               <Button layoutX="184.0" layoutY="350.0" mnemonicParsing="false" onAction="#deleteOwners" text="Удалить" textFill="#ff1515" />
-                              <TextField fx:id="certificate" layoutX="543.0" layoutY="403.0" />
-                              <TextField fx:id="address" layoutX="259.0" layoutY="439.0" />
-                              <TextField fx:id="FIO" layoutX="33.0" layoutY="439.0" />
-                              <TextField fx:id="auto" layoutX="33.0" layoutY="404.0" />
-                              <Button layoutX="543.0" layoutY="438.0" mnemonicParsing="false" onAction="#saveOwner" prefHeight="26.0" prefWidth="91.0" text="Сохранить" />
-                               <ChoiceBox fx:id="gender" layoutX="258.0" layoutY="403.0" prefHeight="26.0" prefWidth="149.0" GridPane.columnIndex="5" GridPane.rowIndex="3">
+                              <TextField fx:id="certificate" layoutX="426.0" layoutY="425.0" />
+                              <TextField fx:id="address" layoutX="244.0" layoutY="425.0" />
+                              <TextField fx:id="FIO" layoutX="39.0" layoutY="425.0" />
+                              <Button layoutX="618.0" layoutY="424.0" mnemonicParsing="false" onAction="#saveOwner" prefHeight="26.0" prefWidth="91.0" text="Сохранить" />
+                               <ChoiceBox fx:id="gender" layoutX="618.0" layoutY="393.0" prefHeight="26.0" prefWidth="90.0" GridPane.columnIndex="5" GridPane.rowIndex="3">
                                    <items>
                                        <FXCollections fx:factory="observableArrayList">
                                            <String fx:value="Man" />
@@ -102,6 +132,9 @@
                                        </FXCollections>
                                    </items>
                                </ChoiceBox>
+                              <Text layoutX="39.0" layoutY="421.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ФИО" />
+                              <Text layoutX="244.0" layoutY="420.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Адрес" />
+                              <Text layoutX="426.0" layoutY="420.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Удостоверение" />
                            </children>
                         </AnchorPane>
                   </content>

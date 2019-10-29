@@ -23,7 +23,7 @@ public class ControllerAEDcar implements Initializable {
     @FXML
     private TableView<Data> table, tableOwners;
     @FXML
-    private TableColumn<Data, String> col1, col2, col3, col4, col5, col7, col8, col9, col10,col12;
+    private TableColumn<Data, String> col1, col2, col3, col4, col5, col7, col9, col10,col12;
     @FXML
     private TableColumn<Data, Integer> colid, col6,col11;
     @FXML
@@ -32,7 +32,8 @@ public class ControllerAEDcar implements Initializable {
     private ChoiceBox gender;
     private ObservableList<Data> DataAuto = FXCollections.observableArrayList();
     private ObservableList<Data> DataOwners = FXCollections.observableArrayList();
-
+    private PreparedStatement preparedStatement;
+    private ResultSet rs;
 
 
 
@@ -58,53 +59,40 @@ public class ControllerAEDcar implements Initializable {
         col5.setCellValueFactory(new PropertyValueFactory<Data, String>("password"));
         col6.setCellValueFactory(new PropertyValueFactory<Data, Integer>("years"));
         col7.setCellValueFactory(new PropertyValueFactory<Data, String>("id"));
-        col8.setCellValueFactory(new PropertyValueFactory<Data, String>("gender"));
-        col9.setCellValueFactory(new PropertyValueFactory<Data, String>("address"));
-        col10.setCellValueFactory(new PropertyValueFactory<Data, String>("certificate"));
-        col11.setCellValueFactory(new PropertyValueFactory<Data, Integer>("idAuto"));
-        col12.setCellValueFactory(new PropertyValueFactory<Data, String>("FIO"));
+        col9.setCellValueFactory(new PropertyValueFactory<Data, String>("FIO"));
+        col10.setCellValueFactory(new PropertyValueFactory<Data, String>("gender"));
+        col11.setCellValueFactory(new PropertyValueFactory<Data, Integer>("address"));
+        col12.setCellValueFactory(new PropertyValueFactory<Data, String>("certificate"));
 
         PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM gibdd_auto");
         ResultSet rs = preparedStatement.executeQuery();
         while (rs.next()) {
-            int id = rs.getInt(1);
-            String autonumberStr = rs.getString(2);
-            String engineStr = rs.getString(3);
-            String colorStr = rs.getString(4);
-            String modelStr = rs.getString(5);
-            String passportStr = rs.getString(6);
-            int yearsInt = rs.getInt(7);
-
-            DataAuto.add(new Data(id, autonumberStr, engineStr, colorStr, modelStr, passportStr, yearsInt));
+            DataAuto.add(new Data(rs.getInt(1), rs.getString(2),  rs.getString(3), rs.getString(4),
+                    rs.getString(5), rs.getString(6), rs.getInt(7)));
         }
         table.setItems(DataAuto);
 
         preparedStatement = conn.prepareStatement("SELECT * FROM gibdd_owner");
         rs = preparedStatement.executeQuery();
         while (rs.next()) {
-            int id = rs.getInt(1);
-            int idAuto = rs.getInt(2);
-            String certificateSTR = rs.getString(3);
-            String FIOStr = rs.getString(4);
-            String address = rs.getString(5);
-            String genderSTR = rs.getString(6);
-            DataOwners.add(new Data(id,idAuto, certificateSTR, FIOStr, address, genderSTR));
+            DataOwners.add(new Data(rs.getInt(1), rs.getString(4),
+                    rs.getString(2), rs.getString(5), rs.getString(3)));
         }
         tableOwners.setItems(DataOwners);
     }
 
     public void save(ActionEvent actionEvent) throws SQLException {
-        System.out.println("fdskof");
         int count=0;
-        PreparedStatement preparedStatement = conn.prepareStatement("SELECT COUNT(id_auto) FROM gibdd_auto where id_auto=?");
-        preparedStatement.setInt(1, Integer.parseInt(id.getText()));
-        ResultSet rs = preparedStatement.executeQuery();
-        while (rs.next()) {
-            count=rs.getInt(1);
+        if(!id.getText().equals("")) {
+            preparedStatement = conn.prepareStatement("SELECT COUNT(id_auto) FROM gibdd_auto WHERE id_auto=?");
+            preparedStatement.setInt(1, Integer.parseInt(id.getText()));
+            rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                count = rs.getInt(1);
+            }
         }
-
         if (count==1){
-            preparedStatement = conn.prepareStatement("UPDATE gibdd_auto SET autonumber=?,engine=?,color=?,model=?,passport=?,yers=? where id_auto=?");
+            preparedStatement = conn.prepareStatement("UPDATE gibdd_auto SET autonumber=?,engine=?,color=?,model=?,passport=?,yers=? WHERE id_auto=?");
             preparedStatement.setString(1, autonumber.getText());
             preparedStatement.setString(2, engine.getText());
             preparedStatement.setString(3, color.getText());
@@ -112,29 +100,30 @@ public class ControllerAEDcar implements Initializable {
             preparedStatement.setString(5, passport.getText());
             preparedStatement.setInt(6, Integer.parseInt(year.getText()));
             preparedStatement.setInt(7, Integer.parseInt(id.getText()));
-            System.out.println(preparedStatement);
             preparedStatement.executeUpdate();
         }else if(count==0){
-            preparedStatement = conn.prepareStatement("insert into gibdd_auto(id_auto, autonumber,engine, color, model, passport, yers) values\n" +
-                    "    (?,?, ?,?,?,?,?);");
-            preparedStatement.setInt(1, Integer.parseInt(id.getText()));
-            preparedStatement.setString(2, autonumber.getText());
-            preparedStatement.setString(3, engine.getText());
-            preparedStatement.setString(4, color.getText());
-            preparedStatement.setString(5, model.getText());
-            preparedStatement.setString(6, passport.getText());
-            preparedStatement.setInt(7, Integer.parseInt(year.getText()));
+            preparedStatement = conn.prepareStatement("INSERT INTO gibdd_auto(autonumber,engine, color, model, passport, yers) VALUES \n" +
+                    "    (?, ?,?,?,?,?);");
+            preparedStatement.setString(1, autonumber.getText());
+            preparedStatement.setString(2, engine.getText());
+            preparedStatement.setString(3, color.getText());
+            preparedStatement.setString(4, model.getText());
+            preparedStatement.setString(5, passport.getText());
+            preparedStatement.setInt(6, Integer.parseInt(year.getText()));
             preparedStatement.executeUpdate();
         }
         createTable();
+        ControllerMain cm= new ControllerMain();
+        cm.createChoice();
+        id.clear();
     }
 
 
 
     public void search(ActionEvent actionEvent) throws SQLException {
-        PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM gibdd_auto where id_auto=?");
+        preparedStatement = conn.prepareStatement("SELECT * FROM gibdd_auto WHERE id_auto=?");
         preparedStatement.setInt(1, Integer.parseInt(id.getText()));
-        ResultSet rs = preparedStatement.executeQuery();
+        rs = preparedStatement.executeQuery();
         while (rs.next()) {
             autonumber.setText(rs.getString(2));
             engine.setText(rs.getString(3));
@@ -146,57 +135,54 @@ public class ControllerAEDcar implements Initializable {
     }
 
     public void delete(ActionEvent actionEvent) throws SQLException {
-        PreparedStatement preparedStatement = conn.prepareStatement("DELETE FROM gibdd_auto cascade WHERE id_auto=?");
+        preparedStatement = conn.prepareStatement("DELETE FROM gibdd_auto CASCADE WHERE id_auto=?");
         preparedStatement.setInt(1, Integer.parseInt(id.getText()));
-        preparedStatement.executeQuery();
+        preparedStatement.executeUpdate();
         createTable();
     }
 
     public void saveOwner(ActionEvent actionEvent) throws SQLException {
         int count=0;
-        PreparedStatement preparedStatement = conn.prepareStatement("SELECT COUNT(id_owner) FROM gibdd_owner where id_owner=?");
-        preparedStatement.setInt(1, Integer.parseInt(idOwners.getText()));
-        ResultSet rs = preparedStatement.executeQuery();
-        while (rs.next()) {
-            count=rs.getInt(1);
+        if(!idOwners.getText().equals("")) {
+             preparedStatement = conn.prepareStatement("SELECT COUNT(id_owner) FROM gibdd_owner WHERE id_owner=?");
+            preparedStatement.setInt(1, Integer.parseInt(idOwners.getText()));
+            rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                count = rs.getInt(1);
+            }
         }
-
         if (count==1){
-            preparedStatement = conn.prepareStatement("UPDATE gibdd_owner SET id_auto=?,certificate=?,FIO=?,adress=?,gender=? where id_owner=?");
-            preparedStatement.setInt(1, Integer.parseInt(auto.getText()));
-            preparedStatement.setString(2, certificate.getText());
-            preparedStatement.setString(3, FIO.getText());
-            preparedStatement.setString(4, address.getText());
-            preparedStatement.setString(5, gender.getValue().toString());
-            preparedStatement.setInt(6, Integer.parseInt(idOwners.getText()));
+            preparedStatement = conn.prepareStatement("UPDATE gibdd_owner SET certificate=?,FIO=?,adress=?,gender=? WHERE id_owner=?");
+            preparedStatement.setString(1, certificate.getText());
+            preparedStatement.setString(2, FIO.getText());
+            preparedStatement.setString(3, address.getText());
+            preparedStatement.setString(4, gender.getValue().toString());
+            preparedStatement.setInt(5, Integer.parseInt(idOwners.getText()));
             System.out.println(preparedStatement);
             preparedStatement.executeUpdate();
         }else if(count==0){
-            preparedStatement = conn.prepareStatement("insert into gibdd_owner(id_auto,id_owner, certificate,FIO, adress, gender) values\n" +
-                    "    (?,?, ?,?,?,?);");
-            preparedStatement.setInt(1, Integer.parseInt(auto.getText()));
-            preparedStatement.setInt(2, Integer.parseInt(idOwners.getText()));
-            preparedStatement.setString(3, certificate.getText());
-            preparedStatement.setString(4, FIO.getText());
-            preparedStatement.setString(5, address.getText());
-            preparedStatement.setString(6, gender.getValue().toString());
-            System.out.println(preparedStatement);
+            preparedStatement = conn.prepareStatement("INSERT INTO gibdd_owner( certificate,FIO, adress, gender) VALUES \n" +
+                    "    (?,?,?,?);");
+            preparedStatement.setString(1, certificate.getText());
+            preparedStatement.setString(2, FIO.getText());
+            preparedStatement.setString(3, address.getText());
+            preparedStatement.setString(4, gender.getValue().toString());
             preparedStatement.executeUpdate();
         }
         createTable();
     }
 
     public void deleteOwners(ActionEvent actionEvent) throws SQLException {
-        PreparedStatement preparedStatement = conn.prepareStatement("DELETE FROM gibdd_owner cascade WHERE id_owner=?");
+        PreparedStatement preparedStatement = conn.prepareStatement("DELETE FROM gibdd_owner CASCADE WHERE id_owner=?");
         preparedStatement.setInt(1, Integer.parseInt(idOwners.getText()));
         preparedStatement.executeUpdate();
         createTable();
     }
 
     public void searchOwners(ActionEvent actionEvent) throws SQLException {
-        PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM gibdd_owner where id_owner=?");
+        preparedStatement = conn.prepareStatement("SELECT * FROM gibdd_owner WHERE id_owner=?");
         preparedStatement.setInt(1, Integer.parseInt(idOwners.getText()));
-        ResultSet rs = preparedStatement.executeQuery();
+        rs = preparedStatement.executeQuery();
         while (rs.next()) {
             auto.setText(rs.getString(2));
             certificate.setText(rs.getString(3));
