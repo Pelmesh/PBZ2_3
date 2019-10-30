@@ -12,10 +12,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import sample.Data;
 import sample.Main;
-
 import java.net.URL;
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class ControllerAEDcar implements Initializable {
@@ -34,9 +32,6 @@ public class ControllerAEDcar implements Initializable {
     private ObservableList<Data> DataOwners = FXCollections.observableArrayList();
     private PreparedStatement preparedStatement;
     private ResultSet rs;
-
-
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

@@ -6,9 +6,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import sample.Controller.ControllerAEDcar;
 
-
 public class WindowAEDcar {
-
 
     public void start() throws Exception {
         Stage primaryStage = new Stage();
@@ -22,6 +20,4 @@ public class WindowAEDcar {
         start();
         ControllerAEDcar con = new ControllerAEDcar();
     }
-
-
 }

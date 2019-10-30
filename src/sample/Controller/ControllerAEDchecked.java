@@ -9,12 +9,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import sample.Data;
 import sample.Main;
-
-import javax.annotation.PostConstruct;
 import java.net.URL;
 import java.sql.*;
-import java.time.LocalDate;
-import java.util.Calendar;
 import java.util.ResourceBundle;
 
 public class ControllerAEDchecked implements Initializable {
@@ -35,8 +31,6 @@ public class ControllerAEDchecked implements Initializable {
     private PreparedStatement preparedStatement;
     private  ResultSet rs;
 
-
-
     void createTable() throws SQLException {
         table.getItems().clear();
 
@@ -55,11 +49,10 @@ public class ControllerAEDchecked implements Initializable {
         table.setItems(usersData);
     }
 
-
     public void save(ActionEvent actionEvent) throws SQLException {
         int count=0;
         if(!Id.getText().equals("")) {
-            preparedStatement = conn.prepareStatement("SELECT COUNT(id_look) FROM gibdd_employee where id_look=?");
+            preparedStatement = conn.prepareStatement("SELECT count(id_look) FROM gibdd_look where id_look=?");
             preparedStatement.setInt(1, Integer.parseInt(Id.getText()));
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
@@ -73,7 +66,7 @@ public class ControllerAEDchecked implements Initializable {
             preparedStatement.setDate(3, Date.valueOf(date.getValue()));
             preparedStatement.setInt(4, Integer.parseInt(idEmp.getText()));
             preparedStatement.setString(5, conclusion.getValue().toString());
-            preparedStatement.setString(6, Id.getText());
+            preparedStatement.setInt(6, Integer.parseInt(Id.getText()));
             preparedStatement.executeUpdate();
         }else if(count==0){
             preparedStatement = conn.prepareStatement("INSERT INTO gibdd_look(id_auto,id_owner, date_look,conlusion, id_employee) VALUES \n" +
@@ -88,7 +81,6 @@ public class ControllerAEDchecked implements Initializable {
         createTable();
     }
 
-
     public void delete(ActionEvent actionEvent) throws SQLException {
         PreparedStatement preparedStatement = conn.prepareStatement("DELETE FROM gibdd_look cascade WHERE id_look=?");
         preparedStatement.setInt(1, Integer.parseInt(Id.getText()));
@@ -101,11 +93,11 @@ public class ControllerAEDchecked implements Initializable {
         preparedStatement.setInt(1, Integer.parseInt(Id.getText()));
         ResultSet rs = preparedStatement.executeQuery();
         while (rs.next()) {
-            idAuto.setText(rs.getString(1));
-            idOwner.setText(rs.getString(2));
-            date.setValue(rs.getDate(3).toLocalDate());
-            conclusion.setValue(rs.getString(4));
-            idEmp.setText(rs.getString(5));
+            idAuto.setText(rs.getString(2));
+            idOwner.setText(rs.getString(3));
+            date.setValue(rs.getDate(4).toLocalDate());
+            conclusion.setValue(rs.getString(5));
+            idEmp.setText(rs.getString(6));
         }
     }
 

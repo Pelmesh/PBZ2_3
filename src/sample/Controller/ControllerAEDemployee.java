@@ -11,11 +11,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import sample.Data;
 import sample.Main;
-
 import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
-import java.util.regex.Pattern;
 
 public class ControllerAEDemployee implements Initializable{
     @FXML
@@ -55,7 +53,6 @@ public class ControllerAEDemployee implements Initializable{
             e.printStackTrace();
         }
     }
-
 
     public void delete(ActionEvent actionEvent) throws SQLException {
         preparedStatement = conn.prepareStatement("DELETE FROM gibdd_employee CASCADE WHERE id_employee=?");

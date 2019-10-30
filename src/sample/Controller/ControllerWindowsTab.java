@@ -11,7 +11,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import sample.Data;
 import sample.Main;
-
 import java.sql.*;
 import java.time.LocalDate;
 
@@ -29,10 +28,6 @@ public class ControllerWindowsTab {
     private TableColumn<Data, Integer> col1;
     private ObservableList<Data> usersData = FXCollections.observableArrayList();
 
-
-
-
-
     public void searchTableOne(ActionEvent actionEvent) throws SQLException {
         usersData.clear();
         TableOne.getItems().clear();
@@ -40,10 +35,10 @@ public class ControllerWindowsTab {
         col1.setCellValueFactory(new PropertyValueFactory<Data, Integer>("id"));
         col2.setCellValueFactory(new PropertyValueFactory<Data, String>("date"));
 
-        PreparedStatement preparedStatement = conn.prepareStatement("select count(a.id_auto),gl.date_look from gibdd_auto a\n" +
-                "inner join gibdd_look gl on a.id_auto = gl.id_auto\n" +
-                "inner join gibdd_employee ge on gl.id_employee = ge.id_employee\n" +
-                "where gl.date_look between ? and ? group by gl.date_look;");
+        PreparedStatement preparedStatement = conn.prepareStatement("SELECT count(a.id_auto),gl.date_look FROM gibdd_auto a " +
+                "INNER JOIN gibdd_look gl on a.id_auto = gl.id_auto\n" +
+                "INNER JOIN gibdd_employee ge on gl.id_employee = ge.id_employee\n" +
+                "WHERE gl.date_look BETWEEN ? AND ? GROUP BY gl.date_look;");
         preparedStatement.setDate(1, Date.valueOf(dateOne.getValue()));
         preparedStatement.setDate(2, Date.valueOf(dateTwo.getValue()));
         ResultSet rs = preparedStatement.executeQuery();
@@ -65,10 +60,10 @@ public class ControllerWindowsTab {
         col5.setCellValueFactory(new PropertyValueFactory<Data, String>("autonumber"));
 
 
-        PreparedStatement preparedStatement = conn.prepareStatement("select e.FIO,e.rank,autonumber from gibdd_employee e\n" +
-                "inner join gibdd_look gl on e.id_employee = gl.id_employee\n" +
-                "inner join gibdd_auto ga on gl.id_auto = ga.id_auto\n" +
-                "where gl.date_look=?");
+        PreparedStatement preparedStatement = conn.prepareStatement("SELECT e.FIO,e.rank,autonumber FROM gibdd_employee e\n" +
+                "INNER JOIN gibdd_look gl ON e.id_employee = gl.id_employee\n" +
+                "INNER JOIN gibdd_auto ga ON gl.id_auto = ga.id_auto\n" +
+                "WHERE gl.date_look=?");
         preparedStatement.setDate(1, Date.valueOf(dateThree.getValue()));
         ResultSet rs = preparedStatement.executeQuery();
         while (rs.next()) {
@@ -84,10 +79,9 @@ public class ControllerWindowsTab {
         col6.setCellValueFactory(new PropertyValueFactory<Data, String>("date"));
         col7.setCellValueFactory(new PropertyValueFactory<Data, String>("conclusion"));
 
-
-        PreparedStatement preparedStatement = conn.prepareStatement("select date_look,conlusion from gibdd_look\n" +
-                "inner join gibdd_auto ga on gibdd_look.id_auto = ga.id_auto\n" +
-                "where engine=?");
+        PreparedStatement preparedStatement = conn.prepareStatement("SELECT date_look,conlusion FROM gibdd_look\n" +
+                "INNER JOIN gibdd_auto ga ON gibdd_look.id_auto = ga.id_auto\n" +
+                "WHERE engine=?");
         preparedStatement.setString(1, engineNumber.getText());
         System.out.println(preparedStatement);
         ResultSet rs = preparedStatement.executeQuery();

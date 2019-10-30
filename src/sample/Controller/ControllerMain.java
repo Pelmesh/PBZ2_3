@@ -82,8 +82,23 @@ public class ControllerMain implements Initializable {
         table.setItems(usersData);
     }
 
-
     public void save(ActionEvent actionEvent) throws SQLException {
+        int count=0;
+        preparedStatement = conn.prepareStatement("SELECT count(e.id_employee) FROM gibdd_employee e" +
+                " INNER JOIN gibdd_look gl on e.id_employee = gl.id_employee" +
+                " WHERE FIO=? AND date_look=?");
+        preparedStatement.setString(1, employee.getValue().toString());
+        preparedStatement.setDate(2, Date.valueOf(date.getValue()));
+        rs = preparedStatement.executeQuery();
+        while (rs.next()) {
+            count=rs.getInt(1);
+        }
+        if(count>10){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText("Больше 10 проверок");
+            alert.show();
+            return;
+        }
         int idAuto = 0;
         int idEmployee = 0;
         int idOwner = 0;
@@ -115,13 +130,15 @@ public class ControllerMain implements Initializable {
         preparedStatement.setString(4, conclusion.getValue().toString());
         preparedStatement.setInt(5, idEmployee);
         preparedStatement.executeUpdate();
+        createTable();
     }
 
      public void createChoice() throws SQLException {
-        employee.getItems().clear();
-        auto.getItems().clear();
-        owners.getItems().clear();
-        langs.clear();
+
+         employee.getItems().clear();
+         auto.getItems().clear();
+         owners.getItems().clear();
+
         preparedStatement = conn.prepareStatement("SELECT FIO FROM gibdd_employee");
         rs = preparedStatement.executeQuery();
         while (rs.next()) {
@@ -144,6 +161,7 @@ public class ControllerMain implements Initializable {
             langs.add(rs.getString(1));
         }
         owners.getItems().addAll(langs);
+        langs.clear();
     }
 
     public void openWin2(ActionEvent actionEvent) throws Exception {

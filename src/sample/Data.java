@@ -72,8 +72,6 @@ public class Data {
         this.idOwner=idOwner;
     }
 
-
-
     public int getIdemp() {
         return idemp;
     }
@@ -234,7 +232,6 @@ public class Data {
         this.position = position;
     }
 
-
     public Data(int id, String autonumber, String engine, String color, String model, String password, String certificate, String FIO, String address, int years, String sex) {
         this.id = id;
         this.autonumber = autonumber;
@@ -247,7 +244,6 @@ public class Data {
         this.years = years;
         this.gender = sex;
         this.FIO = FIO;
-
     }
 
     public Data(int id, String FIO, String position, String rank) {
@@ -278,5 +274,4 @@ public class Data {
         this.date=date;
         this.conclusion=conclusion;
     }
-
 }
