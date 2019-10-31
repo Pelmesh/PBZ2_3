@@ -45,22 +45,23 @@ public class Data {
         this.rank = rank;
     }
 
-    public Data(int id, String autonumber, String engine, String color, String model, String password, int years) {
+    public Data(int id, String autonumber, String engine, String color, String model, String password) {
         this.id=id;
         this.autonumber = autonumber;
         this.engine = engine;
         this.color = color;
         this.password = password;
         this.model = model;
-        this.years = years;
     }
 
-    public Data(int id, String certificate, String FIO,String address, String gender) {
+    public Data(int id, String certificate, String FIO,String address, String gender, int years) {
         this.id=id;
         this.certificate = certificate;
         this.address = address;
         this.gender = gender;
         this.FIO = FIO;
+        this.years=years;
+
     }
 
     public Data(int id, int idOwner,int idAuto,LocalDate date, String conclusion,int idemp) {

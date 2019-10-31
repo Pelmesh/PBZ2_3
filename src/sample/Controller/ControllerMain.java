@@ -67,16 +67,16 @@ public class ControllerMain implements Initializable {
         col14.setCellValueFactory(new PropertyValueFactory<Data, String>("date"));
         col15.setCellValueFactory(new PropertyValueFactory<Data, String>("conclusion"));
 
-        preparedStatement = conn.prepareStatement("select * from gibdd_look l\n" +
-                "left join gibdd_auto ga on l.id_auto = ga.id_auto\n" +
-                "left join gibdd_employee ge on l.id_employee = ge.id_employee\n" +
-                "left join gibdd_owner go on l.id_owner = go.id_owner");
+        preparedStatement = conn.prepareStatement("SELECT * FROM gibdd_look l\n" +
+                "LEFT JOIN gibdd_auto ga on l.id_auto = ga.id_auto\n" +
+                "LEFT JOIN gibdd_employee ge on l.id_employee = ge.id_employee\n" +
+                "LEFT JOIN gibdd_owner go on l.id_owner = go.id_owner");
         rs = preparedStatement.executeQuery();
         while (rs.next()) {
             usersData.add(new Data(rs.getInt(7), rs.getString(8), rs.getString(9), rs.getString(10),
-                    rs.getString(11), rs.getString(12), rs.getInt(13),
-                    rs.getString(19), rs.getString(20), rs.getString(21),rs.getString(22),
-                    rs.getString(15), rs.getString(16),rs.getString(17),
+                    rs.getString(11), rs.getString(12), rs.getInt(22),
+                    rs.getString(18), rs.getString(19), rs.getString(20),rs.getString(21),
+                    rs.getString(14), rs.getString(15),rs.getString(16),
                     rs.getDate(4).toLocalDate(), rs.getString(5)));
         }
         table.setItems(usersData);
@@ -93,7 +93,7 @@ public class ControllerMain implements Initializable {
         while (rs.next()) {
             count=rs.getInt(1);
         }
-        if(count>10){
+        if(count>=10){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText("Больше 10 проверок");
             alert.show();

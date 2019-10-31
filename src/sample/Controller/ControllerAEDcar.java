@@ -23,7 +23,7 @@ public class ControllerAEDcar implements Initializable {
     @FXML
     private TableColumn<Data, String> col1, col2, col3, col4, col5, col7, col9, col10,col12;
     @FXML
-    private TableColumn<Data, Integer> colid, col6,col11;
+    private TableColumn<Data, Integer> colid, col13,col11;
     @FXML
     private TextField id,autonumber,color,engine,model,passport,year,idOwners, FIO,certificate,address,auto;
     @FXML
@@ -52,18 +52,18 @@ public class ControllerAEDcar implements Initializable {
         col3.setCellValueFactory(new PropertyValueFactory<Data, String>("color"));
         col4.setCellValueFactory(new PropertyValueFactory<Data, String>("model"));
         col5.setCellValueFactory(new PropertyValueFactory<Data, String>("password"));
-        col6.setCellValueFactory(new PropertyValueFactory<Data, Integer>("years"));
         col7.setCellValueFactory(new PropertyValueFactory<Data, String>("id"));
         col9.setCellValueFactory(new PropertyValueFactory<Data, String>("FIO"));
         col10.setCellValueFactory(new PropertyValueFactory<Data, String>("gender"));
         col11.setCellValueFactory(new PropertyValueFactory<Data, Integer>("address"));
         col12.setCellValueFactory(new PropertyValueFactory<Data, String>("certificate"));
+        col13.setCellValueFactory(new PropertyValueFactory<Data, Integer>("years"));
 
         PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM gibdd_auto");
         ResultSet rs = preparedStatement.executeQuery();
         while (rs.next()) {
             DataAuto.add(new Data(rs.getInt(1), rs.getString(2),  rs.getString(3), rs.getString(4),
-                    rs.getString(5), rs.getString(6), rs.getInt(7)));
+                    rs.getString(5), rs.getString(6)));
         }
         table.setItems(DataAuto);
 
@@ -71,7 +71,7 @@ public class ControllerAEDcar implements Initializable {
         rs = preparedStatement.executeQuery();
         while (rs.next()) {
             DataOwners.add(new Data(rs.getInt(1), rs.getString(4),
-                    rs.getString(2), rs.getString(5), rs.getString(3)));
+                    rs.getString(2), rs.getString(5), rs.getString(3),rs.getInt(6)));
         }
         tableOwners.setItems(DataOwners);
     }
@@ -87,29 +87,25 @@ public class ControllerAEDcar implements Initializable {
             }
         }
         if (count==1){
-            preparedStatement = conn.prepareStatement("UPDATE gibdd_auto SET autonumber=?,engine=?,color=?,model=?,passport=?,yers=? WHERE id_auto=?");
+            preparedStatement = conn.prepareStatement("UPDATE gibdd_auto SET autonumber=?,engine=?,color=?,model=?,passport=? WHERE id_auto=?");
             preparedStatement.setString(1, autonumber.getText());
             preparedStatement.setString(2, engine.getText());
             preparedStatement.setString(3, color.getText());
             preparedStatement.setString(4, model.getText());
             preparedStatement.setString(5, passport.getText());
-            preparedStatement.setInt(6, Integer.parseInt(year.getText()));
-            preparedStatement.setInt(7, Integer.parseInt(id.getText()));
+            preparedStatement.setInt(6, Integer.parseInt(id.getText()));
             preparedStatement.executeUpdate();
         }else if(count==0){
-            preparedStatement = conn.prepareStatement("INSERT INTO gibdd_auto(autonumber,engine, color, model, passport, yers) VALUES \n" +
-                    "    (?, ?,?,?,?,?);");
+            preparedStatement = conn.prepareStatement("INSERT INTO gibdd_auto(autonumber,engine, color, model, passport) VALUES \n" +
+                    "    (?, ?,?,?,?);");
             preparedStatement.setString(1, autonumber.getText());
             preparedStatement.setString(2, engine.getText());
             preparedStatement.setString(3, color.getText());
             preparedStatement.setString(4, model.getText());
             preparedStatement.setString(5, passport.getText());
-            preparedStatement.setInt(6, Integer.parseInt(year.getText()));
             preparedStatement.executeUpdate();
         }
         createTable();
-        ControllerMain cm= new ControllerMain();
-        cm.createChoice();
         id.clear();
     }
 
@@ -125,7 +121,6 @@ public class ControllerAEDcar implements Initializable {
             color.setText(rs.getString(4));
             model.setText(rs.getString(5));
             passport.setText(rs.getString(6));
-            year.setText(rs.getString(7));
         }
     }
 
@@ -147,21 +142,23 @@ public class ControllerAEDcar implements Initializable {
             }
         }
         if (count==1){
-            preparedStatement = conn.prepareStatement("UPDATE gibdd_owner SET certificate=?,FIO=?,adress=?,gender=? WHERE id_owner=?");
+            preparedStatement = conn.prepareStatement("UPDATE gibdd_owner SET certificate=?,FIO=?,adress=?,gender=?,year=? WHERE id_owner=?");
             preparedStatement.setString(1, certificate.getText());
             preparedStatement.setString(2, FIO.getText());
             preparedStatement.setString(3, address.getText());
             preparedStatement.setString(4, gender.getValue().toString());
-            preparedStatement.setInt(5, Integer.parseInt(idOwners.getText()));
+            preparedStatement.setInt(5, Integer.parseInt(year.getText()));
+            preparedStatement.setInt(6, Integer.parseInt(idOwners.getText()));
             System.out.println(preparedStatement);
             preparedStatement.executeUpdate();
         }else if(count==0){
-            preparedStatement = conn.prepareStatement("INSERT INTO gibdd_owner( certificate,FIO, adress, gender) VALUES \n" +
-                    "    (?,?,?,?);");
+            preparedStatement = conn.prepareStatement("INSERT INTO gibdd_owner( certificate,FIO, adress, gender, year) VALUES \n" +
+                    "    (?,?,?,?,?);");
             preparedStatement.setString(1, certificate.getText());
             preparedStatement.setString(2, FIO.getText());
             preparedStatement.setString(3, address.getText());
             preparedStatement.setString(4, gender.getValue().toString());
+            preparedStatement.setInt(5, Integer.parseInt(year.getText()));
             preparedStatement.executeUpdate();
         }
         createTable();
@@ -179,11 +176,11 @@ public class ControllerAEDcar implements Initializable {
         preparedStatement.setInt(1, Integer.parseInt(idOwners.getText()));
         rs = preparedStatement.executeQuery();
         while (rs.next()) {
-            auto.setText(rs.getString(2));
-            certificate.setText(rs.getString(3));
-            FIO.setText(rs.getString(4));
-            address.setText(rs.getString(5));
-            gender.setValue(rs.getString(6));
+            certificate.setText(rs.getString(2));
+            FIO.setText(rs.getString(3));
+            address.setText(rs.getString(4));
+            gender.setValue(rs.getString(5));
+            year.setText(String.valueOf(rs.getInt(6)));
         }
     }
 }
