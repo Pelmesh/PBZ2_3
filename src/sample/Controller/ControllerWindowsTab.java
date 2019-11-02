@@ -14,7 +14,8 @@ import sample.Main;
 import java.sql.*;
 import java.time.LocalDate;
 
-public class ControllerWindowsTab {
+public class
+ControllerWindowsTab {
     private Connection conn = Main.returnCon();
     @FXML
     private TableView<Data> TableOne,TableTwo,TableThree;
@@ -28,6 +29,33 @@ public class ControllerWindowsTab {
     private TableColumn<Data, Integer> col1;
     private ObservableList<Data> usersData = FXCollections.observableArrayList();
 
+    private PreparedStatement preparedStatementSearchOne() throws SQLException{
+        PreparedStatement preparedStatement =conn.prepareStatement("SELECT count(a.id_auto),gl.date_look FROM gibdd_auto a " +
+                "INNER JOIN gibdd_look gl on a.id_auto = gl.id_auto\n" +
+                "INNER JOIN gibdd_employee ge on gl.id_employee = ge.id_employee\n" +
+                "WHERE gl.date_look BETWEEN ? AND ? GROUP BY gl.date_look;");
+        preparedStatement.setDate(1, Date.valueOf(dateOne.getValue()));
+        preparedStatement.setDate(2, Date.valueOf(dateTwo.getValue()));
+        return preparedStatement;
+    }
+
+    private PreparedStatement preparedStatementSearchTwo() throws SQLException{
+        PreparedStatement preparedStatement =conn.prepareStatement("SELECT e.FIO,e.rank,autonumber FROM gibdd_employee e\n" +
+                "INNER JOIN gibdd_look gl ON e.id_employee = gl.id_employee\n" +
+                "INNER JOIN gibdd_auto ga ON gl.id_auto = ga.id_auto\n" +
+                "WHERE gl.date_look=?");
+        preparedStatement.setDate(1, Date.valueOf(dateThree.getValue()));
+        return preparedStatement;
+    }
+
+    private PreparedStatement preparedStatementSearchThree() throws SQLException{
+        PreparedStatement preparedStatement = conn.prepareStatement("SELECT date_look,conlusion FROM gibdd_look\n" +
+                "INNER JOIN gibdd_auto ga ON gibdd_look.id_auto = ga.id_auto\n" +
+                "WHERE engine=?");
+        preparedStatement.setString(1, engineNumber.getText());
+        return preparedStatement;
+    }
+
     public void searchTableOne(ActionEvent actionEvent) throws SQLException {
         usersData.clear();
         TableOne.getItems().clear();
@@ -35,20 +63,18 @@ public class ControllerWindowsTab {
         col1.setCellValueFactory(new PropertyValueFactory<Data, Integer>("id"));
         col2.setCellValueFactory(new PropertyValueFactory<Data, String>("date"));
 
-        PreparedStatement preparedStatement = conn.prepareStatement("SELECT count(a.id_auto),gl.date_look FROM gibdd_auto a " +
-                "INNER JOIN gibdd_look gl on a.id_auto = gl.id_auto\n" +
-                "INNER JOIN gibdd_employee ge on gl.id_employee = ge.id_employee\n" +
-                "WHERE gl.date_look BETWEEN ? AND ? GROUP BY gl.date_look;");
-        preparedStatement.setDate(1, Date.valueOf(dateOne.getValue()));
-        preparedStatement.setDate(2, Date.valueOf(dateTwo.getValue()));
-        ResultSet rs = preparedStatement.executeQuery();
-        while (rs.next()) {
-            int id = rs.getInt(1);
-            Date date = rs.getDate(2);
-            LocalDate localD = date.toLocalDate();
-            usersData.add(new Data(id, localD));
+        try(PreparedStatement preparedStatement = preparedStatementSearchOne();
+        ResultSet rs = preparedStatement.executeQuery();) {
+            while (rs.next()) {
+                int id = rs.getInt(1);
+                Date date = rs.getDate(2);
+                LocalDate localD = date.toLocalDate();
+                usersData.add(new Data(id, localD));
+            }
+            TableOne.setItems(usersData);
+        }catch (SQLException e) {
+            e.printStackTrace();
         }
-        TableOne.setItems(usersData);
     }
 
     public void searchTableTwo(ActionEvent actionEvent) throws SQLException {
@@ -59,18 +85,17 @@ public class ControllerWindowsTab {
         col4.setCellValueFactory(new PropertyValueFactory<Data, String>("rank"));
         col5.setCellValueFactory(new PropertyValueFactory<Data, String>("autonumber"));
 
-
-        PreparedStatement preparedStatement = conn.prepareStatement("SELECT e.FIO,e.rank,autonumber FROM gibdd_employee e\n" +
-                "INNER JOIN gibdd_look gl ON e.id_employee = gl.id_employee\n" +
-                "INNER JOIN gibdd_auto ga ON gl.id_auto = ga.id_auto\n" +
-                "WHERE gl.date_look=?");
-        preparedStatement.setDate(1, Date.valueOf(dateThree.getValue()));
-        ResultSet rs = preparedStatement.executeQuery();
-        while (rs.next()) {
-            usersData.add(new Data(rs.getString(1), rs.getString(2),rs.getString(3)));
+        try(PreparedStatement preparedStatement = preparedStatementSearchTwo();
+        ResultSet rs = preparedStatement.executeQuery();) {
+            while (rs.next()) {
+                usersData.add(new Data(rs.getString(1), rs.getString(2), rs.getString(3)));
+            }
+            TableTwo.setItems(usersData);
+        }catch (SQLException e) {
+            e.printStackTrace();
         }
-        TableTwo.setItems(usersData);
     }
+
 
     public void searchTableThree(ActionEvent actionEvent) throws SQLException {
         usersData.clear();
@@ -79,17 +104,16 @@ public class ControllerWindowsTab {
         col6.setCellValueFactory(new PropertyValueFactory<Data, String>("date"));
         col7.setCellValueFactory(new PropertyValueFactory<Data, String>("conclusion"));
 
-        PreparedStatement preparedStatement = conn.prepareStatement("SELECT date_look,conlusion FROM gibdd_look\n" +
-                "INNER JOIN gibdd_auto ga ON gibdd_look.id_auto = ga.id_auto\n" +
-                "WHERE engine=?");
-        preparedStatement.setString(1, engineNumber.getText());
-        System.out.println(preparedStatement);
-        ResultSet rs = preparedStatement.executeQuery();
-        while (rs.next()) {
-            Date date = rs.getDate(1);
-            LocalDate localD = date.toLocalDate();
-            usersData.add(new Data(localD, rs.getString(2)));
+        try(PreparedStatement preparedStatement = preparedStatementSearchThree();
+        ResultSet rs = preparedStatement.executeQuery();) {
+            while (rs.next()) {
+                Date date = rs.getDate(1);
+                LocalDate localD = date.toLocalDate();
+                usersData.add(new Data(localD, rs.getString(2)));
+            }
+            TableThree.setItems(usersData);
+        }catch (SQLException e) {
+            e.printStackTrace();
         }
-        TableThree.setItems(usersData);
     }
 }

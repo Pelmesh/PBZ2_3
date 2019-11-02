@@ -4,26 +4,26 @@ import java.time.LocalDate;
 
 public class Data {
 
-    int id;
-    int idAuto;
-    String conclusion;
-    String autonumber;
-    String engine;
-    String color;
-    String password;
-    String model;
-    LocalDate date;
-    String certificate;
-    String address;
-    int years;
-    String employee;
-    String rank;
-    String gender;
-    String FIO;
-    String position;
-    int count;
-    int idOwner;
-    int idemp;
+    private int id;
+    private int idAuto;
+    private String conclusion;
+    private String autonumber;
+    private String engine;
+    private String color;
+    private String password;
+    private String model;
+    private LocalDate date;
+    private String certificate;
+    private String address;
+    private int years;
+    private String employee;
+    private String rank;
+    private String gender;
+    private String FIO;
+    private String position;
+    private int count;
+    private int idOwner;
+    private int idemp;
 
     public Data(int id, String autonumber, String engine, String color, String model, String password, int years, String certificate,
                 String FIO, String address, String gender, String employee, String position, String rank,LocalDate date, String conclusion) {
