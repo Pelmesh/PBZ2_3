@@ -11,8 +11,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import sample.Data;
 import sample.Main;
+
 import java.net.URL;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class ControllerAEDemployee implements Initializable{
@@ -109,6 +113,7 @@ public class ControllerAEDemployee implements Initializable{
         preparedStatement.setString(1, FIO.getText());
         preparedStatement.setString(2, rank.getText());
         preparedStatement.setString(3, position.getText());
+        System.out.println(preparedStatement);
         return preparedStatement;
     }
 

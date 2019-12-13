@@ -14,7 +14,10 @@ import sample.Data;
 import sample.Main;
 
 import java.net.URL;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class ControllerAEDcar implements Initializable {
@@ -34,14 +37,12 @@ public class ControllerAEDcar implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        try {
+
             createTable();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
     }
 
-    private void createTable() throws SQLException {
+    private void createTable() {
         DataAuto.clear();
         DataOwners.clear();
         table.getItems().clear();
@@ -68,6 +69,8 @@ public class ControllerAEDcar implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+
 
         try (PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM gibdd_owner");
              ResultSet rs = preparedStatement.executeQuery();) {
@@ -174,7 +177,6 @@ public class ControllerAEDcar implements Initializable {
             e.printStackTrace();
         }
     }
-
 
     private PreparedStatement preparedStatementCountOwner() throws SQLException{
         PreparedStatement preparedStatement = conn.prepareStatement("SELECT COUNT(id_owner) FROM gibdd_owner WHERE id_owner=?");

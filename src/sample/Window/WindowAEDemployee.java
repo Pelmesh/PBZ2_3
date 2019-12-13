@@ -4,7 +4,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import sample.Controller.ControllerAEDemployee;
 
 public class WindowAEDemployee {
     public void start() throws Exception {
@@ -17,7 +16,5 @@ public class WindowAEDemployee {
 
     public WindowAEDemployee() throws Exception {
         start();
-        ControllerAEDemployee con = new ControllerAEDemployee();
     }
-
 }

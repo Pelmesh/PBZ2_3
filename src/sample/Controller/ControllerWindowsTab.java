@@ -11,11 +11,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import sample.Data;
 import sample.Main;
+
 import java.sql.*;
 import java.time.LocalDate;
 
-public class
-ControllerWindowsTab {
+public class ControllerWindowsTab {
     private Connection conn = Main.returnCon();
     @FXML
     private TableView<Data> TableOne,TableTwo,TableThree;

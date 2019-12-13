@@ -29,9 +29,14 @@ public class ControllerMain implements Initializable {
     @FXML
     private TableColumn<Data, Integer> col16, col6;
     @FXML
-    private ChoiceBox conclusion, employee, auto, owners;
+    private ChoiceBox conclusion;
+    @FXML
+    private ChoiceBox<String> employee;
+    @FXML
+    private ChoiceBox<String> auto;
+    @FXML
+    private ChoiceBox<String> owners;
     private Connection conn = Main.returnCon();
-    private ObservableList<String> langs = FXCollections.observableArrayList();
     private ObservableList<Data> usersData = FXCollections.observableArrayList();
 
     public void initialize(URL location, ResourceBundle resources) {
@@ -184,22 +189,17 @@ public class ControllerMain implements Initializable {
         try (PreparedStatement preparedStatement = conn.prepareStatement("SELECT FIO FROM gibdd_employee");
              ResultSet rs = preparedStatement.executeQuery();) {
             while (rs.next()) {
-                langs.add(rs.getString(1));
+                employee.getItems().addAll(rs.getString(1));
             }
-            employee.getItems().addAll(langs);
-            langs.clear();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-
         try (PreparedStatement preparedStatement = conn.prepareStatement("SELECT engine FROM gibdd_auto");
              ResultSet rs = preparedStatement.executeQuery();) {
             while (rs.next()) {
-                langs.add(rs.getString(1));
+                auto.getItems().addAll(rs.getString(1));
             }
-            auto.getItems().addAll(langs);
-            langs.clear();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -207,10 +207,8 @@ public class ControllerMain implements Initializable {
         try (PreparedStatement preparedStatement = conn.prepareStatement("SELECT FIO FROM gibdd_owner");
              ResultSet rs = preparedStatement.executeQuery();) {
             while (rs.next()) {
-                langs.add(rs.getString(1));
+                owners.getItems().addAll(rs.getString(1));
             }
-            owners.getItems().addAll(langs);
-            langs.clear();
         } catch (SQLException e) {
             e.printStackTrace();
         }
